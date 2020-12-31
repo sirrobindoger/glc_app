@@ -1,0 +1,22 @@
+/* ensure all pages have Bootstrap CSS */
+
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+
+.login-m1 {
+    padding: 5rem;
+    width: auto;
+    
+}
+
+.login-d1 {
+    text-align: center;
+}
+
+.login-d2 {
+    margin: 0 auto;
+    text-align: center;
+    height: 7rem;
+    width: 20rem;
+    padding: 10px;
+  }
