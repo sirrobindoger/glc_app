@@ -12,9 +12,7 @@ const Login = () => {
                     * {
                         background-color: #f6f9fd;
                     }
-            `}</style>
-
-       
+            `}</style>       
             <Nav className="justify-content-end mr-5">
                 <Nav.Item>
                     <Nav.Link href="/#">
@@ -28,7 +26,7 @@ const Login = () => {
                             <b>My Forms</b>
                         </p>
                     </div>
-                    <div className="l">
+                    <div>
                         <Form className="login-d2">
                             <Form.Group controlId="form-email-login">
                                 <Form.Control type="email" placeholder="Enter email" />
@@ -43,9 +41,7 @@ const Login = () => {
                     </div>
 
             </main>
-
         </>
     )
 }
-
 export default Login;
