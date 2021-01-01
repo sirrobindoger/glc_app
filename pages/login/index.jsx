@@ -8,12 +8,15 @@ class Login extends React.Component {
         super(props)
         this.state = {
             email: "",
-            buissness: ""
+            buissness: "",
+            buissnessForm: () => {},
+            loginText: "Login"
         }
-
     }
 
-    handleLogin(e) {
+    
+
+    handleLogin = (e) => {
         e.preventDefault()
         const {data, err} = fetch("api/user", {method:"POST", body: JSON.stringify(
             {
@@ -23,44 +26,47 @@ class Login extends React.Component {
         })
     }
 
-    render() {
+    renderGymBox = () => {
+        if (!this.state.buissnessActive) {
+                this.setState({buissnessForm: () => {
+                return (
+                        <Form.Control className="my-2" onChange={(val) => this.setState({buissness:val.target.value})} size="lg" type="email" placeholder="Buissness Name"/>
+                    )
+                }, 
+                buissnessActive: true, 
+                loginText: "Search"
+            })
+        }
+    }
+
+    render() {      
         return (
 			<div style={{height:"25%"}}>
 					<Nav className="justify-content-end mr-5">
 						<Nav.Item>
-							<Nav.Link href="/#">
+							<Nav.Link active={false}>
 								Create Account
 							</Nav.Link>
 						</Nav.Item>
 					</Nav>
 
-					<Row className="justify-content-center">	
+					<Row className="justify-content-center" onSubmit={this.handleLogin}>	
 						<Form>
 							<p>My Forms</p>
 							<Form.Group>
-								<Form.Control size="lg" type="email" placeholder="Enter email"/>
+								<Form.Control onChange={(val) => this.setState({email:val.target.value})} size="lg" type="email" placeholder="Enter email"/>
+                                {this.state.buissnessForm()}
 							</Form.Group>
-							<Button className="float-left"  variant="link" type="submit">
-										Forgot Email?
+							<Button className="float-left"  variant="link" type="submit" onClick={this.renderGymBox}>
+									Forgot Email?
 							</Button>
-							<Button className="float-right"  variant="primary" type="submit" onClick={console.log("gamer")}>
-								Login
+							<Button className="float-right"  variant="primary" type="submit">
+								{this.state.loginText}
 							</Button>
 						</Form>
 					</Row>
-
 			</div>
 
-			/*<Container className="align-items-center h-100">
-				<Nav className="justify-content-end mr-5">
-					<Nav.Item>
-						<Nav.Link href="/#">
-							Create Account
-						</Nav.Link>
-					</Nav.Item>
-				</Nav>
-	
-			</Container>*/
         )
     }
 }

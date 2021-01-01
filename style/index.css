@@ -3,7 +3,7 @@
 @import 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css';
 
 
-html, body, body > div:first-child, div#next, div#next > div, div#__next > div > div, #fuck {
+html, body, body > div:first-child, div#next, div#next > div, div#__next > div > div {
     height: 100%;
 }
 /*
