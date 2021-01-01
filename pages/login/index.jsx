@@ -1,11 +1,6 @@
-import {Row, Form, Button, Nav} from "react-bootstrap";
+import {Form, Button, Nav, Container, Row, Col} from "react-bootstrap";
 import React from "react"
 import Head from "next/head";
-import useSWR from "swr";
-
-
-
-
 
 class Login extends React.Component {
 
@@ -30,45 +25,42 @@ class Login extends React.Component {
 
     render() {
         return (
-                <>
-                <Head>
-                    <title>GLC | LOGIN</title>
-                    <meta name="description" content="Please login."/>
-                </Head>
-                <style jsx global>{`
-                        * {
-                            background-color: #f6f9fd;
-                        }
-                `}</style>       
-                <Nav className="justify-content-end mr-5">
-                    <Nav.Item>
-                        <Nav.Link href="/#">
-                            Create Account
-                        </Nav.Link>
-                    </Nav.Item>
-                </Nav>
-                <main className="login-m1">
-                        <div className="login-d1">
-                            <p className="login m-1">
-                                <b>My Forms</b>
-                            </p>
-                        </div>
-                        <div>
-                            <Form className="login-d2" onSubmit={(ev, val) => this.handleLogin(ev, val)}>
-                                <Form.Group controlId="form-email-login">
-                                    <Form.Control type="email" onChange={(event) => this.setState({email: event.target.value })} placeholder="Enter email" />
-                                </Form.Group>
-                                <Button className="float-left" size="sm" variant="link" type="submit">
-                                    Forgot Email?
-                                </Button>
-                                <Button className="float-right" variant="primary" type="submit">
-                                    Login
-                                </Button>
-                            </Form>
-                        </div>
+			<div style={{height:"25%"}}>
+					<Nav className="justify-content-end mr-5">
+						<Nav.Item>
+							<Nav.Link href="/#">
+								Create Account
+							</Nav.Link>
+						</Nav.Item>
+					</Nav>
 
-                </main>
-            </>
+					<Row className="justify-content-center">	
+						<Form>
+							<p>My Forms</p>
+							<Form.Group>
+								<Form.Control size="lg" type="email" placeholder="Enter email"/>
+							</Form.Group>
+							<Button className="float-left"  variant="link" type="submit">
+										Forgot Email?
+							</Button>
+							<Button className="float-right"  variant="primary" type="submit" onClick={console.log("gamer")}>
+								Login
+							</Button>
+						</Form>
+					</Row>
+
+			</div>
+
+			/*<Container className="align-items-center h-100">
+				<Nav className="justify-content-end mr-5">
+					<Nav.Item>
+						<Nav.Link href="/#">
+							Create Account
+						</Nav.Link>
+					</Nav.Item>
+				</Nav>
+	
+			</Container>*/
         )
     }
 }
