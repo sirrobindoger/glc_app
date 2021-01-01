@@ -3,21 +3,29 @@ import React from "react"
 import Head from "next/head";
 import useSWR from "swr";
 
-const util = require('util')
 
-const handleSubmit = (event) => {
-    console.log(util.inspect(event))
-    event.preventDefault()
-}
-const handleEmailChange = (event) => {
-    console.log(this)
-    event.preventDefault()
-}
+
+
 
 class Login extends React.Component {
 
-    handleEmailChange = (event) => {
-        console.log(this)
+    constructor (props) {
+        super(props)
+        this.state = {
+            email: "",
+            buissness: ""
+        }
+
+    }
+
+    handleLogin(e) {
+        e.preventDefault()
+        const {data, err} = fetch("api/user", {method:"POST", body: JSON.stringify(
+            {
+            email:this.state.email,
+            type:"auth"
+            })
+        })
     }
 
     render() {
@@ -46,14 +54,14 @@ class Login extends React.Component {
                             </p>
                         </div>
                         <div>
-                            <Form className="login-d2" onSubmit={handleSubmit}>
+                            <Form className="login-d2" onSubmit={(ev, val) => this.handleLogin(ev, val)}>
                                 <Form.Group controlId="form-email-login">
-                                    <Form.Control type="email" placeholder="Enter email" onChange={this.handleEmailChange}/>
+                                    <Form.Control type="email" onChange={(event) => this.setState({email: event.target.value })} placeholder="Enter email" />
                                 </Form.Group>
                                 <Button className="float-left" size="sm" variant="link" type="submit">
                                     Forgot Email?
                                 </Button>
-                                <Button className="float-right" variant="primary" type="submit" onClick={console.log("gamer")}>
+                                <Button className="float-right" variant="primary" type="submit">
                                     Login
                                 </Button>
                             </Form>

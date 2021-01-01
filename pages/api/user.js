@@ -6,7 +6,8 @@ import Mail from "nodemailer";
 const util = require('util')
 
 const Handler = (req, res) => {
-    res.end(util.inspect(req));
+    console.log(req.body)
+    res.end("yeah")
 }
 
 export default Handler;
