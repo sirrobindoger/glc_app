@@ -25,10 +25,14 @@ class Login extends React.Component {
 		}).then((data) => {
 			return data.json()
 		}).then((dat) => {
-			if (dat.type != 2) {
-				this.generateAlert(dat.dat)
-			}
+            console.log("true")
+            if (dat.op) {
+                console.log("true")
+            } else {
+                this.generateAlert(dat.dat)
+            }
         }).catch((err) => {
+            console.log("true")
             this.generateAlert(err)
         })
 		
