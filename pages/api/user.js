@@ -1,33 +1,41 @@
 //placeholder
-
-import {UseRouter} from "next/router";
 import SQL from "mysql";
 import Mail from "nodemailer";
 import {format} from "sqlstring";
-
+const crypt = require("crypto");
 
 var con = SQL.createConnection({
     host: "box.sprojects.org",
-    user: "sirro",
-    password: "Robindoger8",
-    database: "glc_app",
+    user: "glc",
+    password: "FEStr34tW$TG",
+	database: "glc_app"
 })
 
 
-const Handler = (req, res) => {
+const Handler = async (req, res) => {
     const payload = JSON.parse(req.body)
     if (req.method = "POST" && payload.type) {
-        console.log("ys")
         if (payload.type == "auth") {
             console.log("Recieved auth")
-            const email = payload.email.toLowerCase()
-            con.query(format("SELECT * FROM users WHERE email = ?", email), (err, dat) => {
-                console.log(err)
-            })
-            console.log("test")
-        }
+			const email = payload.email.toLowerCase()
+			const result = await new Promise((reso, rej) => {
+				con.query(format("SELECT * FROM glc_users WHERE EMAIL = ?", email), (err, dat) => {
+					if (err) {reso({type: 0, dat: "Internal Server Error"}); return;}
+					if (dat.length === 0) {reso({type: 1, dat: "Email Not Found"}); return;}
+
+					reso({type: 2, dat: dat})
+				})
+			})
+			
+			if (result.type === 2) {
+
+			} else {
+				res.end(JSON.stringify(result))
+
+			}
+			
+		}
     }
-    res.end("test")
 }
 
 export default Handler;

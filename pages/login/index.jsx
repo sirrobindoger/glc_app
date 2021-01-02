@@ -1,4 +1,4 @@
-import {Form, Button, Nav, Container, Row, Col} from "react-bootstrap";
+import {Form, Button, Nav, Container, Row, Alert} from "react-bootstrap";
 import React from "react"
 import Head from "next/head";
 
@@ -9,20 +9,43 @@ class Login extends React.Component {
         this.state = {
             email: "",
             buissness: "",
-            buissnessForm: () => {},
+			buissnessForm: () => {},
+			alert: () => {},
             loginText: "Login"
         }
     }
 
     handleLogin = (e) => {
         e.preventDefault()
-        const {data, err} = fetch("api/user", {method:"POST", body: JSON.stringify(
+        fetch("api/user", {method:"POST", body: JSON.stringify(
             {
-            email:this.state.email,
-            type:"auth"
+            	email:this.state.email,
+            	type:"auth"
             })
-        })
+		}).then((data) => {
+			return data.json()
+		}).then((dat) => {
+			if (dat.type != 2) {
+				this.generateAlert(dat.dat)
+			}
+		})
+		
     }
+
+	generateAlert = (message) => {
+		if (message.length > 0) {
+			this.setState({alert: () => {
+				return (
+					<Alert variant={"danger"}>
+						Login failure: {message}
+					</Alert>
+				)
+			}
+			})
+		} else {
+			this.setState({alert: () => {}})
+		}	
+	}
 
     renderGymBox = () => {
         if (!this.state.buissnessActive) {
@@ -48,17 +71,18 @@ class Login extends React.Component {
 						</Nav.Item>
 					</Nav>
 
-					<Row className="justify-content-center" onSubmit={this.handleLogin}>	
-						<Form>
+					<Row className="justify-content-center">
+						<Form onSubmit={(e) => {e.preventDefault()}}>
+							{this.state.alert()}
 							<p>My Forms</p>
 							<Form.Group>
 								<Form.Control onChange={(val) => this.setState({email:val.target.value})} size="lg" type="email" placeholder="Enter email"/>
                                 {this.state.buissnessForm()}
 							</Form.Group>
-							<Button className="float-left"  variant="link" type="submit" onClick={this.renderGymBox}>
+							<Button className="float-left"  variant="link" onClick={this.renderGymBox}>
 									Forgot Email?
 							</Button>
-							<Button className="float-right"  variant="primary" type="submit">
+							<Button className="float-right"  variant="primary" type="submit" onClick={this.handleLogin}>
 								{this.state.loginText}
 							</Button>
 						</Form>
