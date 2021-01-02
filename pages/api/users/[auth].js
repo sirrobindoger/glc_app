@@ -34,7 +34,7 @@ const callTypes = {
 						from: "glcapp.courier@gmail.com",
 						to: email,
 						subject: "Login Here",
-						html: `<p> <a href="http://${host + "/login?token=" + loginHash}">Click here to login</a> </p>`
+						html: `<p> <a href="http://${host + "?token=" + loginHash}">Click here to login</a> </p>`
 					}
 					await query(`DELETE FROM glc_login WHERE email= '${email}';`)
 					await query(`INSERT INTO glc_login (email, token) VALUES ('${email}', '${loginHash}');`)
