@@ -17,7 +17,7 @@ class Login extends React.Component {
 
     handleLogin = (e) => {
         e.preventDefault()
-        fetch("api/user", {method:"POST", body: JSON.stringify(
+        fetch("api/users/auth", {method:"POST", body: JSON.stringify(
             {
             	email:this.state.email,
             	type:"auth"
@@ -28,7 +28,9 @@ class Login extends React.Component {
 			if (dat.type != 2) {
 				this.generateAlert(dat.dat)
 			}
-		})
+        }).catch((err) => {
+            this.generateAlert(err)
+        })
 		
     }
 
