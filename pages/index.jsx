@@ -4,22 +4,23 @@ import { useEffect } from "react";
 
 const Home = () => {
     const router = useRouter();
-    
     useEffect(() => {
         const token = localStorage.getItem("glc_token");
         const dat = router.query
         console.log(dat)
         if (dat.token) {
+            console.log("token exists")
             fetch("api/users/verify", {method:"POST", body: JSON.stringify(
                 {
-                    email:dat.token,
+                    token:dat.token,
                 })
             }).then((data) => {
                 return data.json()
             }).then((dat) => {
                 console.log(dat)
             })
-        } else if (!token) {
+        } else {
+            console.log("apparently token doesn't exist")
             //router.push("/login")
         }
     })

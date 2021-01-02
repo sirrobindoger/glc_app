@@ -27,7 +27,7 @@ const callTypes = {
 		const email = payload.email ? payload.email.toLowerCase() : false
 		if (email) {
 			try {
-				const users = await query( format("SELECT * FROM glc_users WHERE email = ?", email) )
+				const users = await query( format("SELECT COUNT(*) FROM glc_users WHERE email = ?", email) )
 				if (users.length > 0) {
 					const loginHash = crypt.randomBytes(32).toString("hex")
 					const emailCtor = {
@@ -36,8 +36,8 @@ const callTypes = {
 						subject: "Login Here",
 						html: `<p> <a href="http://${host + "?token=" + loginHash}">Click here to login</a> </p>`
 					}
-					await query(`DELETE FROM glc_login WHERE email= '${email}';`)
-					await query(`INSERT INTO glc_login (email, token) VALUES ('${email}', '${loginHash}');`)
+					query(`DELETE FROM glc_login WHERE email= '${email}';`)
+					query(`INSERT INTO glc_login (email, token) VALUES ('${email}', '${loginHash}');`)
 					const response = await mail(emailCtor)
 					res.end(json({op:true ,dat: ""})) // inform clients that we found the password
 				} else {
@@ -46,6 +46,23 @@ const callTypes = {
 			} catch(e) {
 				console.log(e)
 				res.end(json({op:false ,dat: "Database Error"}))
+			}
+		}
+	},
+	verify: async(payload, res, host) => {
+		const token = payload.token
+		if (token) {
+			const dat1 = await query( format("SELECT email FROM glc_login WHERE token = ?", token) )
+			const email = dat1[0] ? dat1[0].email : false
+			if (email) {
+				const dat2 = await query( format("SELECT pwd, expiry FROM glc_users WHERE email = ?", email) )
+				if (dat2[0]) {
+					const {pwd, expiry} = dat2[0]
+					if (!pwd) {
+						const pwdToken = crypt.randomBytes(32).toString("hex")
+						await query( `UPDATE glc_users SET pwd = ${pwdToken}, expiry = DATEADD(month, 3, CURRENT_TIMESTAMP);`)
+					}
+				}
 			}
 		}
 	}
