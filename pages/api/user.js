@@ -24,7 +24,7 @@ const Handler = (req, res) => {
             con.query(format("SELECT * FROM users WHERE email = ?", email), (err, dat) => {
                 console.log(err)
             })
-            
+            console.log("test")
         }
     }
     res.end("test")
