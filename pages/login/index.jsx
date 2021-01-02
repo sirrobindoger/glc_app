@@ -14,8 +14,6 @@ class Login extends React.Component {
         }
     }
 
-    
-
     handleLogin = (e) => {
         e.preventDefault()
         const {data, err} = fetch("api/user", {method:"POST", body: JSON.stringify(
