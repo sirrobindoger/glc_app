@@ -10,6 +10,6 @@ const Home = () => {
             router.push("/login")
         }
     }, [signedIn])
-    return <h1 className="login-m1">Loading....</h1>
+    return <h1 className="login-m1">Loading.... </h1>
 }
 export default Home;

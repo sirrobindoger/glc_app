@@ -12,64 +12,51 @@ const con = SQL.createConnection({
     password: "FEStr34tW$TG",
 	database: "glc_app"
 })
+const transporter = Mail.createTransport({
+	service: 'gmail',
+	auth: {
+	  user: 'glcapp.courier@gmail.com',
+	  pass: 'Robindoger8'
+	}
+  });
 const query = util.promisify(con.query).bind(con);
-
+const mail = util.promisify(transporter.sendMail).bind(transporter);
 
 const callTypes = {
-	auth: async (payload, res) => {
+	auth: async (payload, res, host) => {
 		const email = payload.email ? payload.email.toLowerCase() : false
 		if (email) {
 			try {
 				const users = await query( format("SELECT * FROM glc_users WHERE email = ?", email) )
 				if (users.length > 0) {
-					res.end(json({op:true ,dat: users}))
+					const loginHash = crypt.randomBytes(32).toString("hex")
+					const emailCtor = {
+						from: "glcapp.courier@gmail.com",
+						to: email,
+						subject: "Login Here",
+						html: `<p> <a href="http://${host + "/login?token=" + loginHash}">Click here to login</a> </p>`
+					}
+					await query(`DELETE FROM glc_login WHERE email= '${email}';`)
+					await query(`INSERT INTO glc_login (email, token) VALUES ('${email}', '${loginHash}');`)
+					const response = await mail(emailCtor)
+					res.end(json({op:true ,dat: ""})) // inform clients that we found the password
 				} else {
 					res.end(json({op:false ,dat: "Email not found."}))
 				}
 			} catch(e) {
+				console.log(e)
 				res.end(json({op:false ,dat: "Database Error"}))
 			}
 		}
 	}
 }
 
-
 const Handler = async (req, res) => {
     const payload = JSON.parse(req.body)
-
 	if (callTypes[ req.query.auth ]) {
-		return await callTypes[ req.query.auth ](payload, res)
+		return await callTypes[ req.query.auth ](payload, res, req.headers.host)
 	}
 	res.end(json({op: false, dat: "User call not found"}))
-
 }
-
-
-
-/*const Handler = async (req, res) => {
-    const payload = JSON.parse(req.body)
-    if (req.method = "POST" && payload.type) {
-        if (payload.type == "auth") {
-            console.log("Recieved auth")
-			const email = payload.email.toLowerCase()
-			const result = await new Promise((reso, rej) => {
-				con.query(format("SELECT * FROM glc_users WHERE EMAIL = ?", email), (err, dat) => {
-					if (err) {reso({type: 0, dat: "Internal Server Error"}); return;}
-					if (dat.length === 0) {reso({type: 1, dat: "Email Not Found"}); return;}
-
-					reso({type: 2, dat: dat})
-				})
-			})
-			
-			if (result.type === 2) {
-
-			} else {
-				res.end(JSON.stringify(result))
-
-			}
-			
-		}
-    }
-}*/
 
 export default Handler;

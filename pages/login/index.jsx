@@ -25,25 +25,21 @@ class Login extends React.Component {
 		}).then((data) => {
 			return data.json()
 		}).then((dat) => {
-            console.log("true")
             if (dat.op) {
-                console.log("true")
+                this.generateAlert("Login Email Sent", "success")
             } else {
                 this.generateAlert(dat.dat)
             }
-        }).catch((err) => {
-            console.log("true")
-            this.generateAlert(err)
         })
 		
     }
 
-	generateAlert = (message) => {
+	generateAlert = (message, variant) => {
 		if (message.length > 0) {
 			this.setState({alert: () => {
 				return (
-					<Alert variant={"danger"}>
-						Login failure: {message}
+					<Alert variant={variant || "danger"}>
+						{message}
 					</Alert>
 				)
 			}
