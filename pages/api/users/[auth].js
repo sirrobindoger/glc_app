@@ -7,26 +7,29 @@ const json = JSON.stringify
 const crypt = require("crypto");
 const util = require("util")
 const con = SQL.createConnection({
-    host: "box.sprojects.org",
-    user: "glc",
-    password: "FEStr34tW$TG",
+	host: "box.sprojects.org",
+	user: "glc",
+	password: "FEStr34tW$TG",
 	database: "glc_app"
 })
-const transporter = Mail.createTransport({
-	service: 'gmail',
-	auth: {
-	  user: 'glcapp.courier@gmail.com',
-	  pass: 'Robindoger8'
-	}
-  });
 const query = util.promisify(con.query).bind(con);
-const mail = util.promisify(transporter.sendMail).bind(transporter);
+const transporter = () => {
+	return Mail.createTransport({
+		service: 'gmail',
+		auth: {
+		  user: 'glcapp.courier@gmail.com',
+		  pass: 'Robindoger8'
+		}
+	});
+} 
+
 const toDate = (date) => {
 	const t = date.toString().split(/[- :]/);
 	return new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
 }
 
 const callTypes = {
+	// handle user login and creating login token
 	auth: async (payload, res, host) => {
 		const email = payload.email ? payload.email.toLowerCase() : false
 		if (email) {
@@ -42,7 +45,7 @@ const callTypes = {
 					}
 					query(`DELETE FROM glc_login WHERE email= '${email}';`)
 					query(`INSERT INTO glc_login (email, token) VALUES ('${email}', '${loginHash}');`)
-					const response = await mail(emailCtor)
+					transporter().sendMail(emailCtor)
 					res.end(json({op:true ,dat: ""})) // inform clients that we found the password
 				} else {
 					res.end(json({op:false ,dat: "Email not found."}))
@@ -53,6 +56,7 @@ const callTypes = {
 			}
 		}
 	},
+	// handle login token and password token creation
 	verify: async(payload, res, host) => {
 		const token = payload.token
 		if (token) {
@@ -79,6 +83,21 @@ const callTypes = {
 		} else {
 			res.end(json({op:false}))
 		}
+	},
+	// check if the users password token is valid
+	check: async(payload, res) => {
+		const token = payload.token
+		if (token) {
+			try {
+				// fetch on condition that password is valid AND it isn't expired
+				const user = await query( format("SELECT COUNT(*) FROM glc_users WHERE token = ? AND expiry <= now();", email) )
+				if (user[0]['COUNT(*)'] > 0) {
+					res.end(json({op:true ,dat: ""})) // valid password
+					return;
+				}
+			} catch {}
+		}
+		res.end(json({op:false ,dat: ""}))
 	}
 }
 
