@@ -17,11 +17,14 @@ const Home = () => {
             }).then((data) => {
                 return data.json()
             }).then((dat) => {
-                console.log(dat)
+                if (dat.op) {
+                    localStorage.setItem("glc_token", dat.dat)
+                    console.log(dat, typeof(dat.dat))
+                    router.push("/dashboard")
+                }
             })
         } else {
-            console.log("apparently token doesn't exist")
-            //router.push("/login")
+            router.push("/login")
         }
     })
     return <h1 className="login-m1">Loading.... </h1>

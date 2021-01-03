@@ -21,14 +21,18 @@ const transporter = Mail.createTransport({
   });
 const query = util.promisify(con.query).bind(con);
 const mail = util.promisify(transporter.sendMail).bind(transporter);
+const toDate = (date) => {
+	const t = date.toString().split(/[- :]/);
+	return new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
+}
 
 const callTypes = {
 	auth: async (payload, res, host) => {
 		const email = payload.email ? payload.email.toLowerCase() : false
 		if (email) {
 			try {
-				const users = await query( format("SELECT COUNT(*) FROM glc_users WHERE email = ?", email) )
-				if (users.length > 0) {
+				const user = await query( format("SELECT COUNT(*) FROM glc_users WHERE email = ?", email) )
+				if (user[0]['COUNT(*)'] > 0) {
 					const loginHash = crypt.randomBytes(32).toString("hex")
 					const emailCtor = {
 						from: "glcapp.courier@gmail.com",
@@ -52,18 +56,28 @@ const callTypes = {
 	verify: async(payload, res, host) => {
 		const token = payload.token
 		if (token) {
-			const dat1 = await query( format("SELECT email FROM glc_login WHERE token = ?", token) )
+			const dat1 = await query( format("SELECT email FROM glc_login WHERE token = ?", token) ) // check if they have a valid login token
 			const email = dat1[0] ? dat1[0].email : false
 			if (email) {
-				const dat2 = await query( format("SELECT pwd, expiry FROM glc_users WHERE email = ?", email) )
+				const dat2 = await query( format("SELECT pwd, expiry FROM glc_users WHERE email = ?", email) ) // fetch the users account token
+				console.log(dat2)
 				if (dat2[0]) {
 					const {pwd, expiry} = dat2[0]
-					if (!pwd) {
-						const pwdToken = crypt.randomBytes(32).toString("hex")
-						await query( `UPDATE glc_users SET pwd = ${pwdToken}, expiry = DATEADD(month, 3, CURRENT_TIMESTAMP);`)
+					if (!pwd || ( expiry && new Date() > toDate(expiry)) ) {// current token has expired or there is no token, lets create a new one	
+						const pwdToken = crypt.randomBytes(32).toString("hex") // generate password		
+						query( `UPDATE glc_users SET pwd = '${pwdToken}', expiry = now() + interval 3 month WHERE email = '${email}';`)
+						res.end(json({op:true, dat:{token:pwdToken}}))
+					} else { // a token exists, let's just reset the expiration
+						query( `UPDATE glc_users SET expiry = now() + interval 3 month WHERE email = '${email}';`)
+						res.end(json({op:true, dat:pwd}))
 					}
 				}
+				query( `DELETE FROM glc_login WHERE token = '${token}'` ) // login token is one time, so let's delete it now
+			} else {
+				res.end(json({op:false}))
 			}
+		} else {
+			res.end(json({op:false}))
 		}
 	}
 }
