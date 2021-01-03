@@ -41,7 +41,7 @@ const callTypes = {
 						from: "glcapp.courier@gmail.com",
 						to: email,
 						subject: "Login Here",
-						html: `<p> <a href="http://${host + "?token=" + loginHash}">Click here to login</a> </p>`
+						html: `<p> <a href="http://${host + "/login/verify?token=" + loginHash}">Click here to login</a> </p>`
 					}
 					query(`DELETE FROM glc_login WHERE email= '${email}';`)
 					query(`INSERT INTO glc_login (email, token) VALUES ('${email}', '${loginHash}');`)
@@ -51,7 +51,6 @@ const callTypes = {
 					res.end(json({op:false ,dat: "Email not found."}))
 				}
 			} catch(e) {
-				console.log(e)
 				res.end(json({op:false ,dat: "Database Error"}))
 			}
 		}
@@ -64,7 +63,6 @@ const callTypes = {
 			const email = dat1[0] ? dat1[0].email : false
 			if (email) {
 				const dat2 = await query( format("SELECT pwd, expiry FROM glc_users WHERE email = ?", email) ) // fetch the users account token
-				console.log(dat2)
 				if (dat2[0]) {
 					const {pwd, expiry} = dat2[0]
 					if (!pwd || ( expiry && new Date() > toDate(expiry)) ) {// current token has expired or there is no token, lets create a new one	
@@ -78,31 +76,37 @@ const callTypes = {
 				}
 				query( `DELETE FROM glc_login WHERE token = '${token}'` ) // login token is one time, so let's delete it now
 			} else {
-				res.end(json({op:false}))
+				res.end(json({op:false, dat:"email not found"}))
 			}
 		} else {
-			res.end(json({op:false}))
+			res.end(json({op:false, dat:"Token not found"}))
 		}
 	},
 	// check if the users password token is valid
 	check: async(payload, res) => {
 		const token = payload.token
+		console.log(payload)
 		if (token) {
 			try {
 				// fetch on condition that password is valid AND it isn't expired
-				const user = await query( format("SELECT COUNT(*) FROM glc_users WHERE token = ? AND expiry <= now();", email) )
+				const user = await query( format("SELECT COUNT(*) FROM glc_users WHERE pwd = ? AND expiry >= now();", token) )
 				if (user[0]['COUNT(*)'] > 0) {
 					res.end(json({op:true ,dat: ""})) // valid password
 					return;
+				} else {
+					res.end(json({op:false ,dat: "USER NOT FOUND"})) // valid password
 				}
-			} catch {}
+			} catch(e) {
+				console.log(e)
+			}
+		} else{
+			res.end(json({op:false ,dat: "No TOKEN"}))
 		}
-		res.end(json({op:false ,dat: ""}))
 	}
 }
 
 const Handler = async (req, res) => {
-    const payload = JSON.parse(req.body)
+	const payload = JSON.parse(req.body || "{}")
 	if (callTypes[ req.query.auth ]) {
 		return await callTypes[ req.query.auth ](payload, res, req.headers.host)
 	}

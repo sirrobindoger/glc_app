@@ -1,15 +1,23 @@
-import {useEffect} from "react"
-import {useRouter} from "next/router";
+import {withRouter} from "next/router";
+import React from "react"
 
+const query = require("query-string")
 
-const Verify = () => {
-    const router = useRouter();
-    useEffect(() => {
+class Verify extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            isLoaded: true
+        }
+    }
+
+    componentDidMount() {
+        const router = this.props.router
+        const dat = query.parse(location.search)
         if (dat.token) {
             const token = localStorage.getItem("glc_token");
-            const dat = router.query
-            console.log("token exists")
-            fetch("api/users/verify", {method:"POST", body: JSON.stringify(
+            
+            fetch("http://" + location.host + "/api/users/verify", {method:"POST", body: JSON.stringify(
                 {
                     token:dat.token,
                 })
@@ -17,15 +25,19 @@ const Verify = () => {
                 return data.json()
             }).then((dat) => {
                 if (dat.op) {
+                    console.log("joe momma")
                     localStorage.setItem("glc_token", dat.dat)
-                    console.log(dat, typeof(dat.dat))
                     router.push("/dashboard")
+                } else {
+                    router.push("/login")
                 }
             })
         } else {
             router.push("/login")
         }
-    })
-    return null;
+    }
+    render() {
+        return null;
+    }
 }
-export default Verify;
+export default withRouter(Verify);

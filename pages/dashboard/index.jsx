@@ -10,6 +10,7 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
+        console.log(location)
         this.setState({pwd: localStorage.getItem("glc_token") || "FAILURE"})
     }
 

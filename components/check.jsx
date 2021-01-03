@@ -1,13 +1,9 @@
-import {useRouter} from "next/router"
-import {useEffect} from "react"
+import {withRouter} from "next/router"
+import {Component} from "react"
 
-const Check = ({redirect}) => {
-    const router = useRouter()
-    useEffect(() => {
-        if (redirect) {
-            router.prefetch(redirect)
-        }
-        router.prefetch("/login")
+class Check extends Component {
+    componentDidMount() {
+        const router = this.props.router
         const token = localStorage.getItem("glc_token")
         if (token) {
             fetch("api/users/check", {
@@ -16,20 +12,23 @@ const Check = ({redirect}) => {
             }).then((data) => {
                 return data.json()
             }).then((data) => {
+                console.log(data)
                 if (!data.op) {
                     localStorage.removeItem("glc_token")
                     router.push("/login")
                 } else {
-                    if (redirect) {
-                        router.push(redirect)
+                    if (this.props.redirect) {
+                        router.push(this.props.redirect)
                     }
                 }
             })
         } else { 
             router.push("/login")
-
         }
-    })
-    return null;
+    }
+
+    render() {
+        return null;
+    }
 }
-export default Check;
+export default withRouter(Check);
