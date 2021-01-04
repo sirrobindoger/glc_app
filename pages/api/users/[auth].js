@@ -45,7 +45,7 @@ const callTypes = {
 					}
 					query(`DELETE FROM glc_login WHERE email= '${email}';`)
 					query(`INSERT INTO glc_login (email, token) VALUES ('${email}', '${loginHash}');`)
-					transporter().sendMail(emailCtor)
+					await transporter().sendMail(emailCtor)
 					res.end(json({op:true ,dat: ""})) // inform clients that we found the password
 				} else {
 					res.end(json({op:false ,dat: "Email not found."}))

@@ -12,21 +12,17 @@ class Check extends Component {
             }).then((data) => {
                 return data.json()
             }).then((data) => {
-                console.log(data)
                 if (!data.op) {
                     localStorage.removeItem("glc_token")
                     router.push("/login")
-                } else {
-                    if (this.props.redirect) {
-                        router.push(this.props.redirect)
-                    }
-                }
+                } else if (this.props.redirect) {
+                    router.push(this.props.redirect)  
+				}
             })
         } else { 
             router.push("/login")
         }
     }
-
     render() {
         return null;
     }
