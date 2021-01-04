@@ -5,6 +5,9 @@ class Check extends Component {
     componentDidMount() {
         const router = this.props.router
         const token = localStorage.getItem("glc_token")
+        if (this.props.redirect) {
+            this.props.router.prefetch(this.props.redirect)
+        }
         if (token) {
             fetch("api/users/check", {
                 method: "POST",

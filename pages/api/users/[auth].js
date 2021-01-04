@@ -86,7 +86,6 @@ const callTypes = {
 	// check if the users password token is valid
 	check: async(payload, res) => {
 		const token = payload.token
-		console.log(payload)
 		if (token) {
 			try {
 				// fetch on condition that password is valid AND it isn't expired
@@ -100,7 +99,7 @@ const callTypes = {
 			} catch(e) {
 				console.log(e)
 			}
-		} else{
+		} else {
 			res.end(json({op:false ,dat: "No TOKEN"}))
 		}
 	}
