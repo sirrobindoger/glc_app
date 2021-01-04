@@ -9,8 +9,12 @@ class Login extends Component {
             email: "",
             buissness: "",
 			buissnessForm: () => {},
-			alert: () => {},
-            loginText: "Login"
+			loginText: "Login",
+			alert: {
+				variant: "success",
+				show: false,
+				message: "Placeholder"
+			}
         }
     }
 
@@ -25,27 +29,22 @@ class Login extends Component {
 			return data.json()
 		}).then((dat) => {
             if (dat.op) {
-                this.generateAlert("Login Email Sent", "success")
+                this.setAlert("Login Email Sent", "success")
             } else {
-                this.generateAlert(dat.dat)
+                this.setAlert(dat.dat)
             }
         })
 		
     }
 
-	generateAlert = (message, variant) => {
-		if (message.length > 0) {
-			this.setState({alert: () => {
-				return (
-					<Alert variant={variant || "danger"}>
-						{message}
-					</Alert>
-				)
+	setAlert = (message, variant, show) => {
+		this.setState({
+			alert: {
+				message: message,
+				variant: variant || "danger",
+				show: show || true,
 			}
-			})
-		} else {
-			this.setState({alert: () => {}})
-		}	
+		})
 	}
 
     renderGymBox = () => {
@@ -74,7 +73,9 @@ class Login extends Component {
 
 					<Row className="justify-content-center">
 						<Form onSubmit={(e) => {e.preventDefault()}}>
-							{this.state.alert()}
+							<Alert variant={this.state.alert.variant} show={this.state.alert.show}>
+								{this.state.alert.message}
+							</Alert>
 							<p>My Forms</p>
 							<Form.Group>
 								<Form.Control onChange={(val) => this.setState({email:val.target.value})} size="lg" type="email" placeholder="Enter email"/>
