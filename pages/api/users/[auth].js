@@ -55,6 +55,7 @@ const callTypes = {
 			}
 		}
 	},
+	
 	// handle login token and password token creation
 	verify: async(payload, res, host) => {
 		const token = payload.token
