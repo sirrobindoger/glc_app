@@ -17,7 +17,7 @@ class Verify extends Component {
         if (dat.token) {
             const token = localStorage.getItem("glc_token");
             
-            fetch("http://" + location.host + "/api/users/verify", {method:"POST", body: JSON.stringify(
+            fetch("https://" + location.host + "/api/users/verify", {method:"POST", body: JSON.stringify(
                 {
                     token:dat.token,
                 })
