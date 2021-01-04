@@ -41,7 +41,7 @@ const callTypes = {
 						from: "glcapp.courier@gmail.com",
 						to: email,
 						subject: "Login Here",
-						html: `<p> <a href="http://${host + "/login/verify?token=" + loginHash}">Click here to login</a> </p>`
+						html: `<p> <a href="https://${host + "/login/verify?token=" + loginHash}">Click here to login</a> </p>`
 					}
 					query(`DELETE FROM glc_login WHERE email= '${email}';`)
 					query(`INSERT INTO glc_login (email, token) VALUES ('${email}', '${loginHash}');`)
@@ -55,7 +55,7 @@ const callTypes = {
 			}
 		}
 	},
-	
+
 	// handle login token and password token creation
 	verify: async(payload, res, host) => {
 		const token = payload.token
