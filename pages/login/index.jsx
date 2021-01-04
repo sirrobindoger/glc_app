@@ -1,7 +1,7 @@
 import {Form, Button, Nav, Container, Row, Alert} from "react-bootstrap";
-import React from "react"
+import {Component} from "react"
 
-class Login extends React.Component {
+class Login extends Component {
 
     constructor (props) {
         super(props)

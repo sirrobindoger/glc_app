@@ -1,7 +1,6 @@
-import React from "react"
+import {Component} from "react"
 
-
-class Dashboard extends React.Component {
+class Dashboard extends Component {
     constructor(props) {
         super(props)
         this.state = {

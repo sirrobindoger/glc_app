@@ -1,5 +1,3 @@
-import { useRouter } from "next/router"
-
 import Check from "../components/check";
 
 

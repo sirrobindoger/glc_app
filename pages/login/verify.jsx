@@ -1,9 +1,9 @@
 import {withRouter} from "next/router";
-import React from "react"
+import {Component} from "react"
 
 const query = require("query-string")
 
-class Verify extends React.Component {
+class Verify extends Component {
     constructor(props) {
         super(props)
         this.state = {
