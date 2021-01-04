@@ -3,11 +3,11 @@ import {Component} from "react"
 
 class Login extends Component {
 
-    constructor (props) {
-        super(props)
-        this.state = {
-            email: "",
-            buissness: "",
+	constructor (props) {
+		super(props)
+		this.state = {
+			email: "",
+			buissness: "",
 			buissnessForm: () => {},
 			loginText: "Login",
 			alert: {
@@ -15,27 +15,27 @@ class Login extends Component {
 				show: false,
 				message: "Placeholder"
 			}
-        }
-    }
+		}
+	}
 
-    handleLogin = (e) => {
-        e.preventDefault()
-        fetch("api/users/auth", {method:"POST", body: JSON.stringify(
-            {
-            	email:this.state.email,
-            	type:"auth"
-            })
+	handleLogin = (e) => {
+		e.preventDefault()
+		fetch("api/users/auth", {method:"POST", body: JSON.stringify(
+			{
+				email:this.state.email,
+				type:"auth"
+			})
 		}).then((data) => {
 			return data.json()
 		}).then((dat) => {
-            if (dat.op) {
-                this.setAlert("Login Email Sent", "success")
-            } else {
-                this.setAlert(dat.dat)
-            }
-        })
+			if (dat.op) {
+				this.setAlert("Login Email Sent", "success")
+			} else {
+				this.setAlert(dat.dat)
+			}
+		})
 		
-    }
+	}
 
 	setAlert = (message, variant, show) => {
 		this.setState({
@@ -47,21 +47,21 @@ class Login extends Component {
 		})
 	}
 
-    renderGymBox = () => {
-        if (!this.state.buissnessActive) {
-                this.setState({buissnessForm: () => {
-                return (
-                        <Form.Control className="my-2" onChange={(val) => this.setState({buissness:val.target.value})} size="lg" type="email" placeholder="Buissness Name"/>
-                    )
-                }, 
-                buissnessActive: true, 
-                loginText: "Search"
-            })
-        }
-    }
+	renderGymBox = () => {
+		if (!this.state.buissnessActive) {
+				this.setState({buissnessForm: () => {
+				return (
+						<Form.Control className="my-2" onChange={(val) => this.setState({buissness:val.target.value})} size="lg" type="email" placeholder="Buissness Name"/>
+					)
+				}, 
+				buissnessActive: true, 
+				loginText: "Search"
+			})
+		}
+	}
 
-    render() {      
-        return (
+	render() {	  
+		return (
 			<div style={{height:"25%"}}>
 					<Nav className="justify-content-end mr-5">
 						<Nav.Item>
@@ -79,7 +79,7 @@ class Login extends Component {
 							<p>My Forms</p>
 							<Form.Group>
 								<Form.Control onChange={(val) => this.setState({email:val.target.value})} size="lg" type="email" placeholder="Enter email"/>
-                                {this.state.buissnessForm()}
+								{this.state.buissnessForm()}
 							</Form.Group>
 							<Button className="float-left"  variant="link" onClick={this.renderGymBox}>
 									Forgot Email?
@@ -91,8 +91,8 @@ class Login extends Component {
 					</Row>
 			</div>
 
-        )
-    }
+		)
+	}
 }
 
 export default Login;
