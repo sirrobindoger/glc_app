@@ -42,16 +42,16 @@ const callTypes = {
 						to: email,
 						subject: "Login Here",
 						html: `<p> <a href="https://${host + "/login/verify?token=" + loginHash}">Click here to login</a> </p>`
-					}
+                    }
+                    res.json({op:true, dat:"Login Email Sent"})
 					query(`DELETE FROM glc_login WHERE email= '${email}';`)
-					query(`INSERT INTO glc_login (email, token) VALUES ('${email}', '${loginHash}');`)
+                    query(`INSERT INTO glc_login (email, token) VALUES ('${email}', '${loginHash}');`) 
 					await transporter().sendMail(emailCtor)
-					res.end(json({op:true ,dat: ""})) // inform clients that we found the password
 				} else {
-					res.end(json({op:false ,dat: "Email not found."}))
+					res.json({op:false, dat: "Email Not Found"})
 				}
 			} catch(e) {
-				res.end(json({op:false ,dat: "Database Error"}))
+				res.json({op:false ,dat: "Database Error"})
 			}
 		}
 	},
@@ -69,18 +69,18 @@ const callTypes = {
 					if (!pwd || ( expiry && new Date() > toDate(expiry)) ) {// current token has expired or there is no token, lets create a new one	
 						const pwdToken = crypt.randomBytes(32).toString("hex") // generate password		
 						query( `UPDATE glc_users SET pwd = '${pwdToken}', expiry = now() + interval 3 month WHERE email = '${email}';`)
-						res.end(json({op:true, dat:{token:pwdToken}}))
+						res.json({op:true, dat:{token:pwdToken}})
 					} else { // a token exists, let's just reset the expiration
 						query( `UPDATE glc_users SET expiry = now() + interval 3 month WHERE email = '${email}';`)
-						res.end(json({op:true, dat:pwd}))
+						res.json({op:true, dat:pwd})
 					}
 				}
 				query( `DELETE FROM glc_login WHERE token = '${token}'` ) // login token is one time, so let's delete it now
 			} else {
-				res.end(json({op:false, dat:"email not found"}))
+				res.json({op:false, dat:"email not found"})
 			}
 		} else {
-			res.end(json({op:false, dat:"Token not found"}))
+			res.json({op:false, dat:"Token not found"})
 		}
 	},
 	// check if the users password token is valid
@@ -91,16 +91,16 @@ const callTypes = {
 				// fetch on condition that password is valid AND it isn't expired
 				const user = await query( format("SELECT COUNT(*) FROM glc_users WHERE pwd = ? AND expiry >= now();", token) )
 				if (user[0]['COUNT(*)'] > 0) {
-					res.end(json({op:true ,dat: ""})) // valid password
+					res.json({op:true}) // valid password
 					return;
 				} else {
-					res.end(json({op:false ,dat: "USER NOT FOUND"})) // valid password
+					res.json({op:false}) // invalid password
 				}
 			} catch(e) {
 				console.log(e)
 			}
 		} else {
-			res.end(json({op:false ,dat: "No TOKEN"}))
+			res.json({op:false})
 		}
 	}
 }
@@ -110,7 +110,7 @@ const Handler = async (req, res) => {
 	if (callTypes[ req.query.auth ]) {
 		return await callTypes[ req.query.auth ](payload, res, req.headers.host)
 	}
-	res.end(json({op: false, dat: "User call not found"}))
+	res.json({op: false})
 }
 
 export default Handler;
