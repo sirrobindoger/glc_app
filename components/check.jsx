@@ -1,5 +1,6 @@
 import {withRouter} from "next/router"
 import {Component} from "react"
+import { parseCookies, setCookie, destroyCookie } from 'nookies'
 
 class Check extends Component {
 	componentDidMount() {
@@ -19,7 +20,8 @@ class Check extends Component {
 					localStorage.removeItem("glc_token")
 					router.push("/login")
 				} else if (this.props.redirect) {
-					router.push(this.props.redirect)  
+                    router.push(this.props.redirect)
+                    setCookie(null, "glc_token", token)
 				}
 			})
 		} else { 

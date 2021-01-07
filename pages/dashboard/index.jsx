@@ -1,23 +1,39 @@
 import {Component} from "react"
+import { parseCookies, setCookie, destroyCookie } from 'nookies'
+import {Navbar, Nav} from "react-bootstrap"
 
 class Dashboard extends Component {
 	constructor(props) {
 		super(props)
-		this.state = {
-			pwd: ""
-		}
-	}
+    }
 
-	componentDidMount() {
-		console.log(location)
-		this.setState({pwd: localStorage.getItem("glc_token") || "FAILURE"})
-	}
 
 	render() {
-		return (
-			<h1>Logged in...{this.state.pwd}</h1>
-		)
+        return ( 
+            <layout>
+
+            </layout>
+        )
 	}
 }
+
+export async function getServerSideProps(ctx) {
+    const cookies = parseCookies(ctx)
+    // user has no cookie/login session, send them back to the main page to verify
+    if (!cookies.glc_token) {
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false,
+            }
+        }
+    }
+    return {
+        props: {
+            date: Date()
+        }
+    }
+}
+
 
 export default Dashboard;

@@ -41,7 +41,7 @@ const callTypes = {
 						from: "glcapp.courier@gmail.com",
 						to: email,
 						subject: "Login Here",
-						html: `<p> <a href="https://${host + "/login/verify?token=" + loginHash}">Click here to login</a> </p>`
+						html: `<p> <a href="${process.env.protocol + host + "/login/verify?token=" + loginHash}">Click here to login</a> </p>`
                     }
                     res.json({op:true, dat:"Login Email Sent"})
 					query(`DELETE FROM glc_login WHERE email= '${email}';`)

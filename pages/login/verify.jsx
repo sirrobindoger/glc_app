@@ -1,6 +1,5 @@
 import {withRouter} from "next/router";
 import {Component} from "react"
-
 const query = require("query-string")
 
 class Verify extends Component {
@@ -17,7 +16,7 @@ class Verify extends Component {
 		if (dat.token) {
 			const token = localStorage.getItem("glc_token");
 			
-			fetch(location.host + location.host + "/api/users/verify", {method:"POST", body: JSON.stringify(
+			fetch(process.env.protocol + location.host + "/api/users/verify", {method:"POST", body: JSON.stringify(
 				{
 					token:dat.token,
 				})
