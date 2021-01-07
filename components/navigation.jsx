@@ -13,9 +13,9 @@ export class Navigation extends Component {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                        <Nav.Item className="pr-3" href="#">My Fourms</Nav.Item>
-                        <Nav.Item className="pr-3" href="#">Manage Providers</Nav.Item>
-                        <Nav.Item className="pr-3" href="#">Add To Homescreen</Nav.Item>
+                        <Nav.Link className="pr-4" href="#" active={this.props.Fourms}>My Fourms</Nav.Link>
+                        <Nav.Link className="pr-4" href="#" active={this.props.Providers}>Manage Providers</Nav.Link>
+                        <Nav.Link className="pr-4" href="#" active={this.props.Homescreen}>Add To Homescreen</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

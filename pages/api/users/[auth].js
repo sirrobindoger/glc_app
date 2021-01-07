@@ -1,4 +1,3 @@
-//placeholder
 import SQL from "mysql";
 import Mail from "nodemailer";
 import {format} from "sqlstring";
