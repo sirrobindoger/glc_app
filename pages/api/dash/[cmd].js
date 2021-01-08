@@ -17,8 +17,8 @@ const callTypes = {
 
         if (token) {
             try {
-                const providers = query(`SELECT providers FROM glc_users WHERE pwd = '${token}';`)
-                
+                const providers = query(`SELECT * FROM glc_providers WHERE JSON_CONTAINS((SELECT providers FROM glc_users WHERE pwd = ${token}), JSON_ARRAY(ID), "$")`)
+
             } catch (e) {
 
             }
