@@ -13,7 +13,7 @@ const query = util.promisify(con.query).bind(con);
 
 const callTypes = {
     providers: async(payload, res, host) => {
-        const token = payload.token
+		const token = payload.token
         const response = ""
 
             try {
@@ -24,7 +24,8 @@ const callTypes = {
                     res.json( json({
                         forums: content.content,
                         logo: providers[0].logo,
-                        description: providers[0].description 
+						description: providers[0].description,
+						uid: providers[0].ID
                     }) )
                 }
             } finally {
