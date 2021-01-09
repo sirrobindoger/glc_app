@@ -14,15 +14,23 @@ const query = util.promisify(con.query).bind(con);
 const callTypes = {
     providers: async(payload, res, host) => {
         const token = payload.token
+        const response = ""
 
-        if (token) {
             try {
-                const providers = query(`SELECT * FROM glc_providers WHERE JSON_CONTAINS((SELECT providers FROM glc_users WHERE pwd = ${token}), JSON_ARRAY(ID), "$")`)
-
-            } catch (e) {
-
+                const providers = await query(`SELECT * FROM glc_providers WHERE JSON_CONTAINS((SELECT providers FROM glc_users WHERE pwd = '${token}'), JSON_ARRAY(ID), "$")`)
+                if (providers.length > 0) {
+                    const forums = await fetch(`https://api.jotform.com/folder/${providers[0].folderid}?apiKey=${providers[0].apikey}`)
+                    const content = await forums.json()
+                    res.json( json({
+                        forums: content.content,
+                        logo: providers[0].logo,
+                        description: providers[0].description 
+                    }) )
+                }
+            } finally {
+                res.json("{}")
             }
-        }
+
 
     }
 }
