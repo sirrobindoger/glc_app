@@ -3,9 +3,8 @@ import {parseCookies, setCookie, destroyCookie } from 'nookies'
 import {Container, Col, Image, Row, Form, Nav} from "react-bootstrap"
 import {Navigation} from "../../components/navigation"
 import FormBox from "../../components/formbox";
-import Document, { Html, Head, Main, NextScript } from 'next/document'
 
-class Dashboard extends Document {
+class Dashboard extends Component {
 	constructor(props) {
         super(props)
         console.log(props)
@@ -31,60 +30,62 @@ class Dashboard extends Document {
     renderFormBox() {
         const forms = []
         {this.props.providers[0].forums.forms.map((val, i) => {
+
             forms.push(
-                <FormBox key={i} form={val}/>
+				<div className="mr-4">
+                	<FormBox key={i} form={val}/>
+				</div>
             )
         })}
         return forms
     }
 	render() {
         return (
-        <Html>
-            <Head /> 
-                <body style={{"backgroundColor": "#f6f9fd"}}>
-                    <Navigation Fourms={true}/>
-                    <Container fluid={true} className="mx-3 mt-3">
-                        <p><small>Providers(s)</small></p>
-                        <Row className="ml-0">   
-                            {this.renderLogos()}
-                        </Row>
-                    </Container>
-                    
-                    <Container fluid={true} className="mx-3 pt-3">
-                        <h6>Affiliate Guard Forums</h6>
-                        <Row>
-                            <Col>
-                                
-                                <Form>
-                                    <Form.Group>
-                                        <Form.Label><small>Search</small></Form.Label>
-                                        <Form.Control placeholder="Form name" />
-                                    </Form.Group>
-                                </Form>
-                            </Col>
-                            <Col xs={8}>
-                                <p>Filter</p>
-                                <Nav defaultActiveKey="all" className="pr-0">
-                                    <Nav.Item>
-                                        <Nav.Link eventKey="all">All</Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Nav.Link eventKey="waivers">Waivers</Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Nav.Link eventKey="hiringcoaches">Hiring Coaches</Nav.Link>
-                                    </Nav.Item>
-                                </Nav>
-                            </Col>
-                        </Row>
-                    </Container>
-                    <Container fluid={true} className="mx-3 pt-3">
-                        <Row>
-                            {this.renderFormBox()}
-                        </Row>
-                    </Container>
-                </body>
-        </Html>
+ 
+			<body style={{"backgroundColor": "#f6f9fd"}}>
+				<Navigation Fourms={true}/>
+				<Container fluid={true} className="mx-3 mt-3">
+					<p className="text-muted"><b>Providers(s)</b></p>
+					<Row className="ml-0">   
+						{this.renderLogos()}
+					</Row>
+				</Container>
+				
+				<Container fluid={true} className="mx-3 pt-3">
+					<h6>Affiliate Guard Forums</h6>
+					<Row >
+						<Col>
+							
+							<Form>
+								<Form.Group>
+									<Form.Label><small><b>Search</b></small></Form.Label>
+									<Form.Control placeholder="Form name" />
+								</Form.Group>
+							</Form>
+						</Col>
+						<Col xs={8}>
+							<p><b>Filter</b></p>
+							<Nav defaultActiveKey="all" className="pr-0">
+								<Nav.Item>
+									<Nav.Link eventKey="all"><b>All</b></Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link className="text-muted" eventKey="waivers"><b>Waivers</b></Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link className="text-muted" eventKey="hiringcoaches"><b>Hiring Coaches</b></Nav.Link>
+								</Nav.Item>
+							</Nav>
+						</Col>
+					</Row>
+				</Container>
+				<Container fluid={true} className="mx-3 pt-3">
+					<Row className="ml-0">
+						{this.renderFormBox()}
+					</Row>
+				</Container>
+			</body>
+
       )
     }
   }

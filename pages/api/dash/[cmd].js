@@ -28,7 +28,7 @@ const callTypes = {
 						uid: providers[0].ID
                     }) )
                 }
-            } finally {
+            } catch {
                 res.json("{}")
             }
 
