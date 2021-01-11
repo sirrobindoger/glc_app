@@ -32,7 +32,7 @@ class Dashboard extends Component {
         {this.props.providers[0].forums.forms.map((val, i) => {
 
             forms.push(
-				<div className="mr-4">
+				<div key={i} className="mr-4">
                 	<FormBox key={i} form={val}/>
 				</div>
             )
