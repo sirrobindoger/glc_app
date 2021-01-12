@@ -68,10 +68,10 @@ const callTypes = {
 					const {pwd, expiry} = dat2[0]
 					if (!pwd || ( expiry && new Date() > toDate(expiry)) ) {// current token has expired or there is no token, lets create a new one	
 						const pwdToken = crypt.randomBytes(32).toString("hex") // generate password		
-						query( `UPDATE glc_users SET pwd = '${pwdToken}', expiry = now() + interval 3 month WHERE email = '${email}';`)
+						await query( `UPDATE glc_users SET pwd = '${pwdToken}', expiry = now() + interval 3 month WHERE email = '${email}';`)
 						res.json({op:true, dat:{token:pwdToken}})
 					} else { // a token exists, let's just reset the expiration
-						query( `UPDATE glc_users SET expiry = now() + interval 3 month WHERE email = '${email}';`)
+						await query( `UPDATE glc_users SET expiry = now() + interval 3 month WHERE email = '${email}';`)
 						res.json({op:true, dat:pwd})
 					}
 				}
