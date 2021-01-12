@@ -67,7 +67,7 @@ export default class FormBox extends Component {
 							border: "2px solid #f7f8f9",
 							borderRadius: "5px",
 							padding: "5px",
-						}} type="text" onChange={this.sendToZap} className="text-muted"  placeHolder="https://zapier.com"/>
+						}} type="text" onChange={this.sendToZap} className="text-muted"  placeholder="https://zapier.com"/>
 						<Form.Text className="text-muted my-0 py-0">
 							Add a zapier webhook url to send new submissions to a zap.
 						</Form.Text>						
@@ -79,9 +79,8 @@ export default class FormBox extends Component {
 	}
     render() {
         return (
-            <Card style={{ width: '20rem' }}>
+            <Card style={{ width: '20rem' }} className="my-1 mx-1">
                 <Card.Header>{this.props.form.title}</Card.Header>
-
 				<Col className="px-0 mx-0">
 					<Button onClick={this.renderFormProps} variant="link" style={{"color":"red"}}>Use Form</Button>
 					<Button href={this.props.form.url} variant="link">View Form</Button>
