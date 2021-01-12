@@ -1,6 +1,6 @@
 import {withRouter} from "next/router"
 import {Component} from "react"
-import { parseCookies, setCookie, destroyCookie } from 'nookies'
+import { setCookie } from 'nookies'
 
 class Check extends Component {
 	componentDidMount() {
