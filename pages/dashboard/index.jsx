@@ -1,6 +1,6 @@
 import {Component} from "react"
-import {parseCookies, setCookie, destroyCookie } from 'nookies'
-import {Container, Col, Image, Row, Form, Nav} from "react-bootstrap"
+import {parseCookies} from 'nookies'
+import {Container, Col, Row, Form, Nav} from "react-bootstrap"
 import {Navigation} from "../../components/navigation"
 import FormBox from "../../components/formbox";
 
@@ -20,7 +20,7 @@ class Dashboard extends Component {
                     key={i}
                     src={val.logo}
                     height="50"
-                    width="150"
+                    width="300"
                 />
 			)
 		})}

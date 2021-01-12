@@ -1,5 +1,6 @@
 import {Component} from "react"
 import {Button, Card, Row, Col, Form} from "react-bootstrap"
+import {parseCookies} from 'nookies'
 
 export default class FormBox extends Component {
 	constructor(props) {
@@ -14,8 +15,15 @@ export default class FormBox extends Component {
 		}
 	}
 
-	setClipboard = () => {
-
+	sendToZap = (event) => {
+		const cookies = parseCookies()
+		if (cookies.glc_token) {
+			fetch("api/dash/webhook", {method: "POST", body: JSON.stringify({
+				formID: this.props.form.id,
+				token: cookies.glc_token,
+				webhook: event.target.value
+			})})
+		}
 	}
 
 	renderFormProps = () => {
@@ -25,7 +33,7 @@ export default class FormBox extends Component {
 					{/* Use Link */}
 					<Row className="mx-0 my-1">				
 						Use Link
-						<Form.Control onClick={console.log("e")} style={{
+						<Form.Control style={{
 							backgroundColor:"white", 
 							fontWeight:"light",
 							border: "2px solid #f7f8f9",
@@ -39,7 +47,7 @@ export default class FormBox extends Component {
 					{/* Embed */}
 					<Row className="mx-0 my-1">
 						Embed
-						<Form.Control onClick={console.log("e")} style={{
+						<Form.Control style={{
 							backgroundColor:"white", 
 							fontWeight:"light",
 							border: "2px solid #f7f8f9",
@@ -51,6 +59,19 @@ export default class FormBox extends Component {
 						</Form.Text>
 					</Row>					
 					{/* Webhook */}
+					<Row className="mx-0 my-1">
+						Send Submissions To Zapier
+						<Form.Control style={{
+							backgroundColor:"white", 
+							fontWeight:"light",
+							border: "2px solid #f7f8f9",
+							borderRadius: "5px",
+							padding: "5px",
+						}} type="text" onChange={this.sendToZap} className="text-muted"  placeHolder="https://zapier.com"/>
+						<Form.Text className="text-muted my-0 py-0">
+							Add a zapier webhook url to send new submissions to a zap. (...)
+						</Form.Text>						
+					</Row>
 				</Row>
 			)
 			
