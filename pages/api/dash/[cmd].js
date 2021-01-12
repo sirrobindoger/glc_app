@@ -15,22 +15,27 @@ const callTypes = {
     providers: async(payload, res, host) => {
 		const token = payload.token
         const response = ""
-
-            try {
-                const providers = await query(`SELECT * FROM glc_providers WHERE JSON_CONTAINS((SELECT providers FROM glc_users WHERE pwd = '${token}'), JSON_ARRAY(ID), "$")`)
-                if (providers.length > 0) {
-                    const forums = await fetch(`https://api.jotform.com/folder/${providers[0].folderid}?apiKey=${providers[0].apikey}`)
-                    const content = await forums.json()
-                    res.json( json({
-                        forums: content.content,
-                        logo: providers[0].logo,
-						description: providers[0].description,
-						uid: providers[0].ID
-                    }) )
-                }
-            } catch {
-                res.json("{}")
+        const forms = {}
+        try {
+            const providers = await query(`SELECT * FROM glc_providers WHERE JSON_CONTAINS((SELECT providers FROM glc_users WHERE pwd = '${token}'), JSON_ARRAY(ID), "$") ORDER BY ID ASC`)
+            if (providers.length > 0) {
+                await Promise.all(
+                        providers.map(async (val, i) => {
+                        const forums = await fetch(`https://api.jotform.com/folder/${val.folderid}?apiKey=${val.apikey}`)
+                        const content = await forums.json()
+                        forms[val.ID] = {
+                            forums: content.content,
+                            logo: val.logo,
+                            description: val.description,
+                            uid: val.ID
+                        }
+                    }) 
+                )
+                res.json( json(forms) )
             }
+        } catch(e) {
+            res.json("{}")
+        }
 	},
 	webhook: async(payload, res, host) => {
 		const {formID, token, webhook} = payload

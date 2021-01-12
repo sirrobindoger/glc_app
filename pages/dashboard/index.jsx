@@ -16,16 +16,18 @@ class Dashboard extends Component {
 
 	renderLogos() {
 		const logos = []
-		{this.props.providers.map((val, i) => {
-			logos.push(	
-                <img 
-                    key={i}
-                    src={val.logo}
-                    height="50"
-                    width="300"
-                />
+		for (const [i, val] of Object.entries(this.props.providers)) {
+			logos.push(
+                <Row className="ml-0 mr-5">
+                    <img 
+                        key={i}
+                        src={val.logo}
+                        height="50"
+                        width="300"
+                    />
+                </Row>
 			)
-		})}
+		}
 		return logos
 	}
 
@@ -46,7 +48,7 @@ class Dashboard extends Component {
 		this.setState({forms: forms})
 	}
 	
-	componentDidMount = () => {this.renderFormBox()}
+	/*componentDidMount = () => {this.renderFormBox()}*/
 
 	render() {
         return (
@@ -102,9 +104,10 @@ export async function getServerSideProps(ctx) {
     if (cookies.glc_token) {
         const res = await fetch(`${process.env.protocol + ctx.req.headers.host}/api/dash/providers`, {method: "POST", body: JSON.stringify({token: cookies.glc_token}) })
         const json = await res.json()
+        console.log(json)
         return {
             props: {
-				providers: [json]
+				providers: json
 			}
         }
 

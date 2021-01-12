@@ -85,8 +85,7 @@ export default class FormBox extends Component {
 				<Col className="px-0 mx-0">
 					<Button onClick={this.renderFormProps} variant="link" style={{"color":"red"}}>Use Form</Button>
 					<Button href={this.props.form.url} variant="link">View Form</Button>
-					{this.renderSubmission()}
-					
+					{this.renderSubmission()}	
 				</Col>
 				<Col>
 					{this.state.formprops}
