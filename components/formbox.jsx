@@ -69,7 +69,7 @@ export default class FormBox extends Component {
 							padding: "5px",
 						}} type="text" onChange={this.sendToZap} className="text-muted"  placeHolder="https://zapier.com"/>
 						<Form.Text className="text-muted my-0 py-0">
-							Add a zapier webhook url to send new submissions to a zap. (...)
+							Add a zapier webhook url to send new submissions to a zap.
 						</Form.Text>						
 					</Row>
 				</Row>

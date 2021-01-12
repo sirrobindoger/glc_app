@@ -7,10 +7,12 @@ import FormBox from "../../components/formbox";
 class Dashboard extends Component {
 	constructor(props) {
         super(props)
-        console.log(props)
+		console.log(props)
+		this.state = {
+			filters: [],
+			forms: []
+		}
     }
-
-    
 
 	renderLogos() {
 		const logos = []
@@ -27,21 +29,27 @@ class Dashboard extends Component {
 		return logos
 	}
 
-    renderFormBox() {
-        const forms = []
-        {this.props.providers[0].forums.forms.map((val, i) => {
+    renderFormBox(e) {
+		const search = e ? e.target.value.toLowerCase() : ""
+		const forms = []
+		console.log("gaming")
+        this.props.providers[0].forums.forms.map((val, i) => {
+			if (search === "" || val.title.toLowerCase().includes(search)) {
+				console.log("gaming1")
+				forms.push(
+					<div key={i} className="mr-4">
+						<FormBox key={i} form={val}/>
+					</div>
+				)
+			}
+		})
+		this.setState({forms: forms})
+	}
+	
+	componentDidMount = () => {this.renderFormBox()}
 
-            forms.push(
-				<div key={i} className="mr-4">
-                	<FormBox key={i} form={val}/>
-				</div>
-            )
-        })}
-        return forms
-    }
 	render() {
         return (
- 
 			<body style={{"backgroundColor": "#f6f9fd"}}>
 				<Navigation Fourms={true}/>
 				<Container fluid={true} className="mx-3 mt-3">
@@ -55,11 +63,10 @@ class Dashboard extends Component {
 					<h6>Affiliate Guard Forums</h6>
 					<Row >
 						<Col>
-							
 							<Form>
 								<Form.Group>
 									<Form.Label><small><b>Search</b></small></Form.Label>
-									<Form.Control placeholder="Form name" />
+									<Form.Control onChange={(e) => {this.renderFormBox(e)}} placeholder="Form name" />
 								</Form.Group>
 							</Form>
 						</Col>
@@ -81,7 +88,7 @@ class Dashboard extends Component {
 				</Container>
 				<Container fluid={true} className="mx-3 pt-3">
 					<Row className="ml-0">
-						{this.renderFormBox()}
+						{this.state.forms}
 					</Row>
 				</Container>
 			</body>
@@ -90,10 +97,10 @@ class Dashboard extends Component {
     }
   }
 export async function getServerSideProps(ctx) {
-    const cookies = parseCookies(ctx)
+	const cookies = parseCookies(ctx)
     // user has no cookie/login session, send them back to the main page to verify
     if (cookies.glc_token) {
-        const res = await fetch("http://localhost:3000/api/dash/providers", {method: "POST", body: JSON.stringify({token: cookies.glc_token}) })
+        const res = await fetch(`${process.env.protocol + ctx.req.headers.host}/api/dash/providers`, {method: "POST", body: JSON.stringify({token: cookies.glc_token}) })
         const json = await res.json()
         return {
             props: {
