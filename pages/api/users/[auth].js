@@ -42,14 +42,15 @@ const callTypes = {
 						subject: "Login Here",
 						html: `<p> <a href="${process.env.protocol + host + "/login/verify?token=" + loginHash}">Click here to login</a> </p>`
                     }
+                    await transporter().sendMail(emailCtor)
                     res.json({op:true, dat:"Login Email Sent"})
 					query(`DELETE FROM glc_login WHERE email= '${email}';`)
                     query(`INSERT INTO glc_login (email, token) VALUES ('${email}', '${loginHash}');`) 
-					await transporter().sendMail(emailCtor)
 				} else {
 					res.json({op:false, dat: "Email Not Found"})
 				}
 			} catch(e) {
+                console.log(e)
 				res.json({op:false ,dat: "Database Error"})
 			}
 		}
