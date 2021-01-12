@@ -1,5 +1,6 @@
 import {withRouter} from "next/router";
 import {Component} from "react"
+import { setCookie } from 'nookies'
 const query = require("query-string")
 
 class Verify extends Component {
