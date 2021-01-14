@@ -1,5 +1,5 @@
 module.exports = {
     env: {
-        protocol: "http://"
+        protocol: "https://"
     }
 }
