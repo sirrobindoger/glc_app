@@ -1,17 +1,16 @@
 import SQL from "mysql";
 
-const json = JSON.stringify
-const util = require("util")
-const con = SQL.createConnection({
-	host: "box.sprojects.org",
-	user: "glc",
-	password: "FEStr34tW$TG",
-	database: "glc_app"
-})
-const query = util.promisify(con.query).bind(con);
-
-
 const Handler = async (req, res) => {
+    const json = JSON.stringify
+    const util = require("util")
+    const con = SQL.createConnection({
+        host: "box.sprojects.org",
+        user: "glc",
+        password: "FEStr34tW$TG",
+        database: "glc_app"
+    })
+    const query = util.promisify(con.query).bind(con);
+    
 	const payload = JSON.parse(req.body || "{}")
 	const token = payload.token
 	const forms = {}

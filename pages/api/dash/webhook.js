@@ -1,15 +1,15 @@
 import SQL from "mysql";
 
-const util = require("util")
-const con = SQL.createConnection({
-	host: "box.sprojects.org",
-	user: "glc",
-	password: "FEStr34tW$TG",
-	database: "glc_app"
-})
-const query = util.promisify(con.query).bind(con);
-
 const Handler = async (req, res) => {
+    const util = require("util")
+    const con = SQL.createConnection({
+        host: "box.sprojects.org",
+        user: "glc",
+        password: "FEStr34tW$TG",
+        database: "glc_app"
+    })
+    const query = util.promisify(con.query).bind(con);
+    
 	const payload = JSON.parse(req.body || "{}")
 	const {formID, token, webhook} = payload
 	const dat1 = await query(`SELECT apikey FROM glc_providers WHERE JSON_CONTAINS((SELECT providers FROM glc_users WHERE pwd = '${token}'), JSON_ARRAY(ID), "$")`)

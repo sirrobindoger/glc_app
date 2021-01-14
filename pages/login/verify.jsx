@@ -29,7 +29,8 @@ class Verify extends Component {
                     setCookie(null, "glc_token", dat.dat)
                     router.push("/dashboard")
 				} else {
-					router.push("/login")
+                    console.log(dat.dat)
+					//router.push("/login")
 				}
 			})
 		} else {
