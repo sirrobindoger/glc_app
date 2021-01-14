@@ -23,7 +23,7 @@ const Handler = async (req, res) => {
 			for (const [i, val] of Object.entries(webhooks.content)) {
 				if (val.includes("hooks.zapier.com")) {
 					//delete zapwebhook
-					fetch(`https://api.jotform.com/form/${formID}/webhooks/${i}?apiKey=${apiKey}`, {method: "DELETE"})
+					await fetch(`https://api.jotform.com/form/${formID}/webhooks/${i}?apiKey=${apiKey}`, {method: "DELETE"})
 					console.log("delete" + val, i)
 				}
 			}
@@ -34,7 +34,7 @@ const Handler = async (req, res) => {
 				headers: {
 					"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
 				}
-			}).then((e) => {return e.json()}).then((e) => {console.log(e)})
+			})
 			console.log(`webhookURL=${webhook}`)
 			
 			
