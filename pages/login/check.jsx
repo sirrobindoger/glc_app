@@ -1,12 +1,11 @@
 import {useRouter} from "next/router"
 import { useEffect } from "react"
-import { useCookies } from 'react-cookie';
+import { setCookie } from 'nookies'
 
 const Check = () => {
     const router = useRouter()
-    const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
     useEffect(() => {
-        const token = localStorage.getItem("glc_token")
+		const token = localStorage.getItem("glc_token")
         if (token) {
             fetch("../api/users/check", {
                 method: "POST",
@@ -20,8 +19,9 @@ const Check = () => {
                     router.push("/login")
                     console.log("pushing to login")
                 } else {
-                    console.log("REDIRECTING", new Date())
-                    setCookie("glc_token", token)
+                    setCookie({}, "glc_token", token, {
+						path: "/"
+					})
                     console.log(token)
                     router.push("/")
                 }

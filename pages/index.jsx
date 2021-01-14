@@ -10,7 +10,7 @@ class Dashboard extends Component {
 		this.state = {
 			filters: [],
             search: "",
-            //currProvider: [Object.keys(this.props.providers)[0]]
+            currProvider: [Object.keys(this.props.providers)[0]]
             
         }
         console.log(props)
@@ -108,12 +108,14 @@ class Dashboard extends Component {
 
       )
     }
-  }
+}
+
+
 export async function getServerSideProps(ctx) {
-    const cookies = parseCookies(ctx)
-    console.log(ctx.req.cookies)
+	const cookies = parseCookies(ctx)
+	console.log(typeof(cookies.glc_token))
     // user has no cookie/login session, send them back to the main page to verify
-    if (cookies.glc_token) {
+    if (cookies.glc_token && cookies.glc_token !== "null") {
         const res = await fetch(`${process.env.protocol + ctx.req.headers.host}/api/dash/providers`, {method: "POST", body: JSON.stringify({token: cookies.glc_token}) })
         const json = await res.json()
         console.log(json)

@@ -26,7 +26,9 @@ class Verify extends Component {
 			}).then((dat) => {
 				if (dat.op) {
                     localStorage.setItem("glc_token", dat.dat)
-                    setCookie(null, "glc_token", dat.dat)
+                    setCookie({}, "glc_token", token, {
+						path: "/"
+					})
                     router.push("/")
 				} else {
                     console.log(dat.dat)
