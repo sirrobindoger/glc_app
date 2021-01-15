@@ -19,6 +19,10 @@ p,a,button{
 	letter-spacing: .04rem;
 }
 
+button:hover, button:focus{
+	text-decoration: none !important;
+	outline: none;
+}
 .form-control{
 	border-color: #E8E9EE;
 }
@@ -83,6 +87,9 @@ html, body, body > div:first-child, div#next, div#next > div, div#__next > div >
 	display: inline-block;
 }
 
+.use-form{
+	padding-left: 0;
+}
 .view-submissions{
 	margin-right: -1rem;
 	background-color: #4C3EE5;

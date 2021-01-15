@@ -29,9 +29,9 @@ export default class FormBox extends Component {
 	renderFormProps = () => {
 		this.setState({
 			formprops: this.state.formprops ? null : (
-				<Row className="mx-0">	
+				<Row>	
 					{/* Use Link */}
-					<Row className="mx-0 my-1">				
+					<Row className="mx-0 my-2">				
 						Use Link
 						<Form.Control style={{
 							backgroundColor:"white", 
@@ -45,7 +45,7 @@ export default class FormBox extends Component {
 						</Form.Text>
 					</Row>
 					{/* Embed */}
-					<Row className="mx-0 my-1">
+					<Row className="mx-0 my-2">
 						Embed
 						<Form.Control style={{
 							backgroundColor:"white", 
@@ -59,7 +59,7 @@ export default class FormBox extends Component {
 						</Form.Text>
 					</Row>					
 					{/* Webhook */}
-					<Row className="mx-0 my-1">
+					<Row className="mx-0 my-2">
 						Send Submissions To Zapier
 						<Form.Control style={{
 							backgroundColor:"white", 
@@ -80,14 +80,14 @@ export default class FormBox extends Component {
     render() {
         return (
 		<Col sm={12} md={6} lg={4}>
-			<div className="panel mb-3 p-3">
+			<div className="panel mb-3 p-3 pt-4">
 				<h4>{this.props.form.title}</h4>
 				<ul className="inline-list formbox-btns">
 					<li>
-						<Button onClick={this.renderFormProps} variant="link" className="link link-red">Use Form</Button>
+						<Button onClick={this.renderFormProps} variant="link" className="link link-red use-form">Use Form</Button>
 					</li>	
 					<li>
-						<Button href={this.props.form.url} variant="link" className="link">View</Button>
+						<Button href={this.props.form.url} variant="link" target="_blank" className="link">View</Button>
 					</li>
 					{this.renderSubmission()}	
 				</ul>
