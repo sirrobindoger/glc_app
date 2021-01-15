@@ -11,7 +11,7 @@ export default class FormBox extends Component {
 	}
 	renderSubmission() {
 		if (this.props.form.count > 0) {
-			return <Button className="float-right" style={{"borderRadius":"0"}}>Submissions</Button>
+			return <Button className="float-right view-submissions" style={{"borderRadius":"0"}}>Submissions</Button>
 		}
 	}
 
@@ -79,17 +79,23 @@ export default class FormBox extends Component {
 	}
     render() {
         return (
-            <Card style={{ width: '20rem' }} className="my-1 mx-1">
-                <Card.Header>{this.props.form.title}</Card.Header>
-				<Col className="px-0 mx-0">
-					<Button onClick={this.renderFormProps} variant="link" style={{"color":"red"}}>Use Form</Button>
-					<Button href={this.props.form.url} variant="link">View Form</Button>
+		<Col sm={12} md={6} lg={4}>
+			<div className="panel mb-3 p-3">
+				<h4>{this.props.form.title}</h4>
+				<ul className="inline-list formbox-btns">
+					<li>
+						<Button onClick={this.renderFormProps} variant="link" className="link link-red">Use Form</Button>
+					</li>	
+					<li>
+						<Button href={this.props.form.url} variant="link" className="link">View</Button>
+					</li>
 					{this.renderSubmission()}	
-				</Col>
+				</ul>
 				<Col>
 					{this.state.formprops}
 				</Col>
-            </Card>
+			</div>
+		</Col>
         )
     }
 }

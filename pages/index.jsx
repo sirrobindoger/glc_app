@@ -19,23 +19,20 @@ class Dashboard extends Component {
 	renderLogos() {
 		const logos = []
 		for (const [i, val] of Object.entries(this.props.providers)) {
-            const drawShadow = this.state.currProvider == i ? {
-                border: "2px solid purple",
-                borderRadius: "5px",
-            } : {}
+            let activeClass = this.state.currProvider == i ? "active" : "";
 			logos.push(
-                <Row key={i} className="ml-0 mr-5">
+                <Col xs="auto" key={i} className={ activeClass + " provider-logos"}>
                     <img 
-                        style={drawShadow}
                         onClick={(e) => {
                             this.logoClicked(i)
                         }}
                         key={i}
                         src={val.logo}
-                        height="50"
-                        width="300"
+                        height="35"
+                        width="auto"
                     />
-                </Row>
+					<span/>
+                </Col>
 			)
 		}
 		return logos
@@ -51,9 +48,7 @@ class Dashboard extends Component {
         this.props.providers[this.state.currProvider].forums.forms.map((val, i) => {
 			if (search === "" || val.title.toLowerCase().includes(search)) {
 				forms.push(
-					<div key={i} className="mr-4">
-						<FormBox key={i} form={val}/>
-					</div>
+					<FormBox key={i} form={val}/>
 				)
 			}
         })
@@ -65,42 +60,42 @@ class Dashboard extends Component {
         return (
 			<body style={{"backgroundColor": "#f6f9fd"}}>
 				<Navigation Fourms={true}/>
-				<Container fluid={true} className="mx-3 mt-3">
-					<p className="text-muted"><b>Providers(s)</b></p>
-					<Row className="ml-0">   
+				<Container fluid={true} className="container mt-3">
+					<p>Provider(s)</p>
+					<Row className="ml-0 mt-3">   
 						{this.renderLogos()}
 					</Row>
 				</Container>
 				
-				<Container fluid={true} className="mx-3 pt-3">
-					<h6>Affiliate Guard Forums</h6>
+				<Container fluid={true} className="dashboard container pt-3">
+					<h4>Affiliate Guard Forms</h4>
 					<Row >
 						<Col>
 							<Form>
 								<Form.Group>
-									<Form.Label><small><b>Search</b></small></Form.Label>
+									<Form.Label>Search</Form.Label>
 									<Form.Control onChange={(e) => {this.setState({search:e.target.value.toLocaleLowerCase()})}} placeholder="Form name" />
 								</Form.Group>
 							</Form>
 						</Col>
 						<Col xs={8}>
-							<p><b>Filter</b></p>
+							<p style={{"margin-bottom": ".5rem"}}>Filter</p>
 							<Nav defaultActiveKey="all" className="pr-0">
 								<Nav.Item>
-									<Nav.Link eventKey="all"><b>All</b></Nav.Link>
+									<Nav.Link eventKey="all">All</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link className="text-muted" eventKey="waivers"><b>Waivers</b></Nav.Link>
+									<Nav.Link className="text-muted" eventKey="waivers">Waivers</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link className="text-muted" eventKey="hiringcoaches"><b>Hiring Coaches</b></Nav.Link>
+									<Nav.Link className="text-muted" eventKey="hiringcoaches">Hiring Coaches</Nav.Link>
 								</Nav.Item>
 							</Nav>
 						</Col>
 					</Row>
 				</Container>
-				<Container fluid={true} className="mx-3 pt-3">
-					<Row className="ml-0">
+				<Container fluid={true} className="container pt-3">
+					<Row>
 						{this.renderFormBox()}
 					</Row>
 				</Container>
