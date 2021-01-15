@@ -33,7 +33,7 @@ const Check = () => {
     
 
 
-	return <h1>bruh</h1>;
+	return null;
 	
 }
 
