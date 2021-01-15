@@ -79,7 +79,7 @@ class Dashboard extends Component {
 							</Form>
 						</Col>
 						<Col xs={8}>
-							<p style={{"margin-bottom": ".5rem"}}>Filter</p>
+							<p style={{"marginBottom": ".5rem"}}>Filter</p>
 							<Nav defaultActiveKey="all" className="pr-0">
 								<Nav.Item>
 									<Nav.Link eventKey="all">All</Nav.Link>
