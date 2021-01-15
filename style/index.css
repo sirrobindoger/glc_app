@@ -23,6 +23,10 @@ button:hover, button:focus{
 	text-decoration: none !important;
 	outline: none;
 }
+.btn-primary{
+	background-color: #4C3EE5;
+	border:none;
+}
 .form-control{
 	border-color: #E8E9EE;
 }
@@ -36,7 +40,6 @@ button:hover, button:focus{
 }
 .navbar-nav .nav-link, .btn-link{
 	color: #8B90A2;
-	font-weight: bold;
 }
 .navbar-nav .nav-link.active, a.active{
 	color: #4C3EE5 !important;
@@ -54,6 +57,10 @@ html, body, body > div:first-child, div#next, div#next > div, div#__next > div >
 	height: 100%;
 }
 
+/*LOGIN*/
+.login-form form{
+	min-width: 250px;
+}
 .provider-logos{
 	text-align: center;
 }
@@ -89,6 +96,7 @@ html, body, body > div:first-child, div#next, div#next > div, div#__next > div >
 
 .use-form{
 	padding-left: 0;
+	font-weight: bold;
 }
 .view-submissions{
 	margin-right: -1rem;
