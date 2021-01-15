@@ -1,8 +1,108 @@
 /* ensure all pages have Bootstrap CSS */
 
 @import 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css';
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
 
+body{
+	font-family: 'Lato', sans-serif;
+	background:#f5fcfd;
+	background: linear-gradient(302deg, #f5fcfd 0%, #f5f6fd 49%, #f1eef5 100%);
+}
+
+h1, h2,h3,h4,h5{
+	font-weight: bold;
+}
+p{
+	color: #393C48;
+}
+p,a,button{
+	letter-spacing: .04rem;
+}
+
+button:hover, button:focus{
+	text-decoration: none !important;
+	outline: none;
+}
+.btn-primary{
+	background-color: #4C3EE5;
+	border:none;
+}
+.form-control{
+	border-color: #E8E9EE;
+}
+.link-red{
+	color: #DF4363 !important;
+}
+/*NAVBAR*/
+.navbar-brand{
+	font-size: 2rem;
+	margin-right: 2rem;
+}
+.navbar-nav .nav-link, .btn-link{
+	color: #8B90A2;
+}
+.navbar-nav .nav-link.active, a.active{
+	color: #4C3EE5 !important;
+}
+
+/*GLOBAL*/
+.panel{
+	background-color: white;
+	border-radius: 5px;
+	border: 1px solid #E8E9EE;
+	padding: 
+}
 /* Override next.js framework default spacing */
 html, body, body > div:first-child, div#next, div#next > div, div#__next > div > div {
 	height: 100%;
+}
+
+/*LOGIN*/
+.login-form form{
+	min-width: 250px;
+}
+.provider-logos{
+	text-align: center;
+}
+.provider-logos span{
+	width: 50px;
+	height: 3px;
+	border-radius:5px;
+	background-color: #4C3EE5;
+	display: block;
+	margin: 10px auto;
+	opacity: 0;
+}
+.provider-logos img{
+	opacity: .3;
+	max-width: 225px;
+
+}
+
+.provider-logos.active img, .provider-logos.active span{
+	opacity: 1;
+}
+
+/*FORMS LIST*/
+.formbox-btns{
+	display: inline;
+	padding-left: 0;
+}
+
+.formbox-btns li{
+	list-style: none;
+	display: inline-block;
+}
+
+.use-form{
+	padding-left: 0;
+	font-weight: bold;
+}
+.view-submissions{
+	margin-right: -1rem;
+	background-color: #4C3EE5;
+	border-top-left-radius: 5px !important;
+	border-bottom-left-radius: 5px !important;
+	border: none !important;
+
 }
