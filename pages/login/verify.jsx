@@ -27,12 +27,13 @@ class Verify extends Component {
 				if (dat.op) {
                     localStorage.setItem("glc_token", dat.dat)
                     setCookie({}, "glc_token", token, {
-						path: "/"
+						path: "/",
+						maxAge: 30 * 24 * 60 * 60
 					})
                     router.push("/")
 				} else {
                     console.log(dat.dat)
-					//router.push("/login")
+					router.push("/login")
 				}
 			})
 		} else {

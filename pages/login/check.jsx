@@ -20,7 +20,8 @@ const Check = () => {
                     console.log("pushing to login")
                 } else {
                     setCookie({}, "glc_token", token, {
-						path: "/"
+						path: "/",
+						maxAge: 30 * 24 * 60 * 60
 					})
                     console.log(token)
                     router.push("/")
