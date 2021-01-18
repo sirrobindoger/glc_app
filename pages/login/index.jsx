@@ -71,14 +71,14 @@ class Login extends Component {
 						</Nav.Item>
 					</Nav>
 
-					<Row className="justify-content-center">
+					<Row className="justify-content-center login-form">
 						<Form onSubmit={(e) => {e.preventDefault()}}>
 							<Alert variant={this.state.alert.variant} show={this.state.alert.show}>
 								{this.state.alert.message}
 							</Alert>
-							<p>My Forms</p>
+							<h3 className="text-center mb-3">My Forms</h3>
 							<Form.Group>
-								<Form.Control onChange={(val) => this.setState({email:val.target.value})} size="lg" type="email" placeholder="Enter email"/>
+								<Form.Control onChange={(val) => this.setState({email:val.target.value})} type="email" placeholder="Enter email"/>
 								{this.state.buissnessForm()}
 							</Form.Group>
 							<Button className="float-left"  variant="link" onClick={this.renderGymBox}>

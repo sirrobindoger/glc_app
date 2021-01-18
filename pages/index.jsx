@@ -12,95 +12,127 @@ class Dashboard extends Component {
             search: "",
             currProvider: [Object.keys(this.props.providers)[0]]
             
-        }
-        console.log(props)
+		}
     }
 
 	renderLogos() {
 		const logos = []
 		for (const [i, val] of Object.entries(this.props.providers)) {
-            const drawShadow = this.state.currProvider == i ? {
-                border: "2px solid purple",
-                borderRadius: "5px",
-            } : {}
+            let activeClass = this.state.currProvider == i ? "active" : "";
 			logos.push(
-                <Row key={i} className="ml-0 mr-5">
+                <Col xs="auto" key={i} className={ activeClass + " provider-logos"}>
                     <img 
-                        style={drawShadow}
                         onClick={(e) => {
                             this.logoClicked(i)
                         }}
                         key={i}
                         src={val.logo}
-                        height="50"
-                        width="300"
+                        height="35"
+                        width="auto"
                     />
-                </Row>
+					<span/>
+                </Col>
 			)
 		}
 		return logos
 	}
 
     logoClicked(i) {
-        this.setState({currProvider: i})
+        this.setState({currProvider: i, filters:[]})
     }
 
     renderFormBox() {
 		const search = this.state.search
 		const forms = []
-        this.props.providers[this.state.currProvider].forums.forms.map((val, i) => {
-			if (search === "" || val.title.toLowerCase().includes(search)) {
-				forms.push(
-					<div key={i} className="mr-4">
-						<FormBox key={i} form={val}/>
-					</div>
-				)
+        this.props.providers[this.state.currProvider].forums.map((val, i) => {
+			var disabled = false
+			if (this.state.filters.length > 0) {
+				disabled = true
+				this.state.filters.map(filter => {
+					if (val.filters.includes(filter)) {
+						disabled = false
+					}
+				})
 			}
+			if ((search === "" || val.title.toLowerCase().includes(search) ) && !disabled) {
+				forms.push(
+					<FormBox key={i} form={val}/>
+				)
+			} 
         })
 		return forms
 	}
 	
+	renderFormTitle() {
+		return (this.props.providers[this.state.currProvider].description)
+	}
+
+
+	renderFilters() {
+		const filters = []
+		this.props.providers[this.state.currProvider].filter.map((filter, i) => {
+			filters.push(
+				<Row key={i} className="ml-0 mr-4">
+					<Nav.Item
+						key={i}
+						style={{
+							color: this.state.filters.includes(filter) ? "#4C3EE5" : "#7c7c7c",
+							fontWeight: "bold"
+						}} 
+						onClick={() => {
+							if (this.state.filters.includes(filter)) {
+								const newarray = []
+								this.state.filters.map(sfilter => {
+									if (sfilter != filter) {
+										newarray.push(sfilter)
+									}
+								})
+								this.setState({filters: newarray})
+							} else {
+								this.setState({filters: [...this.state.filters, filter]})
+							}
+						}}
+						>{filter}
+					</Nav.Item>
+				</Row>
+			)
+		})
+		return filters
+	}
+
 
 	render() {
         return (
 			<body style={{"backgroundColor": "#f6f9fd"}}>
 				<Navigation Fourms={true}/>
-				<Container fluid={true} className="mx-3 mt-3">
-					<p className="text-muted"><b>Providers(s)</b></p>
-					<Row className="ml-0">   
+				<Container fluid={true} className="container mt-3">
+					<p>Provider(s)</p>
+					<Row className="ml-0 mt-3">   
 						{this.renderLogos()}
 					</Row>
 				</Container>
 				
-				<Container fluid={true} className="mx-3 pt-3">
-					<h6>Affiliate Guard Forums</h6>
+				<Container fluid={true} className="dashboard container pt-3">
+					<h4>{this.renderFormTitle()}</h4>
 					<Row >
 						<Col>
 							<Form>
 								<Form.Group>
-									<Form.Label><small><b>Search</b></small></Form.Label>
+									<Form.Label>Search</Form.Label>
 									<Form.Control onChange={(e) => {this.setState({search:e.target.value.toLocaleLowerCase()})}} placeholder="Form name" />
 								</Form.Group>
 							</Form>
 						</Col>
 						<Col xs={8}>
-							<p><b>Filter</b></p>
+							<p style={{"marginBottom": ".5rem"}}>Filter</p>
 							<Nav defaultActiveKey="all" className="pr-0">
-								<Nav.Item>
-									<Nav.Link eventKey="all"><b>All</b></Nav.Link>
-								</Nav.Item>
-								<Nav.Item>
-									<Nav.Link className="text-muted" eventKey="waivers"><b>Waivers</b></Nav.Link>
-								</Nav.Item>
-								<Nav.Item>
-									<Nav.Link className="text-muted" eventKey="hiringcoaches"><b>Hiring Coaches</b></Nav.Link>
-								</Nav.Item>
+								{this.renderFilters()}
 							</Nav>
 						</Col>
 					</Row>
 				</Container>
-				<Container fluid={true} className="mx-3 pt-3">
-					<Row className="ml-0">
+				<Container fluid={true} className="container pt-3">
+					<Row>
 						{this.renderFormBox()}
 					</Row>
 				</Container>
@@ -113,12 +145,10 @@ class Dashboard extends Component {
 
 export async function getServerSideProps(ctx) {
 	const cookies = parseCookies(ctx)
-	console.log(typeof(cookies.glc_token))
     // user has no cookie/login session, send them back to the main page to verify
     if (cookies.glc_token && cookies.glc_token !== "null") {
         const res = await fetch(`${process.env.protocol + ctx.req.headers.host}/api/dash/providers`, {method: "POST", body: JSON.stringify({token: cookies.glc_token}) })
         const json = await res.json()
-        console.log(json)
         return {
             props: {
 				providers: json
