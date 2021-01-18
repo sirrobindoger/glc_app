@@ -13,7 +13,6 @@ class Dashboard extends Component {
             currProvider: [Object.keys(this.props.providers)[0]]
             
 		}
-		console.log(this.props)
     }
 
 	renderLogos() {
@@ -52,9 +51,6 @@ class Dashboard extends Component {
 					disabled = true
 				}
 			})
-			if (disabled) {
-				console.log(val.title)
-			}
 			if ((search === "" || val.title.toLowerCase().includes(search) ) && !disabled) {
 				forms.push(
 					<FormBox key={i} form={val}/>

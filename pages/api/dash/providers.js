@@ -75,12 +75,3 @@ const Handler = async (req, res) => {
 }
 
 export default Handler;
-/*
-					const forums = await fetch(`https://api.jotform.com/folder/${val.folderid}?apiKey=${val.apikey}`)
-					const content = await forums.json()
-					forms[val.ID] = {
-						forums: content.content,
-						logo: val.logo,
-						description: val.description,
-						uid: val.ID
-					}*/
