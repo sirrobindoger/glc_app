@@ -67,10 +67,11 @@ class Dashboard extends Component {
 
 	renderFilters() {
 		const filters = []
-		this.props.providers[this.state.currProvider].filter.map(filter => {
+		this.props.providers[this.state.currProvider].filter.map((filter, i) => {
 			filters.push(
-				<Row className="ml-0 mr-4">
+				<Row key={i} className="ml-0 mr-4">
 					<Nav.Item
+						key={i}
 						style={{
 							color: this.state.filters.includes(filter) ? "#7c7c7c" : "#4C3EE5",
 							fontWeight: "bold"
@@ -88,7 +89,7 @@ class Dashboard extends Component {
 								this.setState({filters: [...this.state.filters, filter]})
 							}
 						}}
-						eventKey="all">{filter}
+						>{filter}
 					</Nav.Item>
 				</Row>
 			)
