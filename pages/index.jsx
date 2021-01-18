@@ -55,6 +55,9 @@ class Dashboard extends Component {
 		return forms
 	}
 	
+	renderFormTitle() {
+		return (this.props.providers[this.state.currProvider].description)
+	}
 
 	render() {
         return (
@@ -68,7 +71,7 @@ class Dashboard extends Component {
 				</Container>
 				
 				<Container fluid={true} className="dashboard container pt-3">
-					<h4>Affiliate Guard Forms</h4>
+					<h4>{this.renderFormTitle()}</h4>
 					<Row >
 						<Col>
 							<Form>
