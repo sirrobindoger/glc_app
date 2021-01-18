@@ -12,12 +12,17 @@ body{
 
 h1, h2,h3,h4,h5{
 	font-weight: bold;
+	letter-spacing: .03rem;
 }
 p{
 	color: #393C48;
 }
 p,a,button{
 	letter-spacing: .04rem;
+}
+
+.nav-link{
+	color: #4C3EE5;
 }
 
 button:hover, button:focus{
@@ -44,6 +49,23 @@ button:hover, button:focus{
 }
 .navbar-nav .nav-link.active, a.active{
 	color: #4C3EE5 !important;
+}
+.navbar .dropdown-toggle{
+	font-size: 22px;
+	color: #8B90A2;
+	text-align: right;
+}
+.navbar .dropdown-toggle:after{
+	display: none;
+}
+.navbar .dropdown-menu{
+	right: 0;
+	left: auto;
+}
+@media (max-width: 991px){
+	.navbar .dropdown-menu{
+		width: 100%;
+	}
 }
 
 /*GLOBAL*/
@@ -85,6 +107,13 @@ html, body, body > div:first-child, div#next, div#next > div, div#__next > div >
 }
 
 /*FORMS LIST*/
+.all-forms-search .form-group{
+	margin-bottom: 0;
+}
+.all-forms-filter .nav-item{
+	margin-right: 1.5rem;
+	margin-top: 6px;
+}
 .formbox-btns{
 	display: inline;
 	padding-left: 0;
