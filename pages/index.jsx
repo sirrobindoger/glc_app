@@ -1,7 +1,7 @@
 import {Component} from "react"
 import {parseCookies, setCookie} from 'nookies'
 import {Container, Col, Row, Form, Nav} from "react-bootstrap"
-import {Navigation} from "../components/navigation"
+import Navigation from "../components/navigation"
 import FormBox from "../components/formbox";
 
 class Dashboard extends Component {
