@@ -46,11 +46,14 @@ class Dashboard extends Component {
 		const forms = []
         this.props.providers[this.state.currProvider].forums.map((val, i) => {
 			var disabled = false
-			val.filters.map(filter => {
-				if (this.state.filters.includes(filter)) {
-					disabled = true
-				}
-			})
+			if (this.state.filters.length > 0) {
+				disabled = true
+				this.state.filters.map(filter => {
+					if (val.filters.includes(filter)) {
+						disabled = false
+					}
+				})
+			}
 			if ((search === "" || val.title.toLowerCase().includes(search) ) && !disabled) {
 				forms.push(
 					<FormBox key={i} form={val}/>
@@ -73,7 +76,7 @@ class Dashboard extends Component {
 					<Nav.Item
 						key={i}
 						style={{
-							color: this.state.filters.includes(filter) ? "#7c7c7c" : "#4C3EE5",
+							color: this.state.filters.includes(filter) ? "#4C3EE5" : "#7c7c7c",
 							fontWeight: "bold"
 						}} 
 						onClick={() => {
