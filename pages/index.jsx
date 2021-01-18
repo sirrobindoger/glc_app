@@ -12,8 +12,8 @@ class Dashboard extends Component {
             search: "",
             currProvider: [Object.keys(this.props.providers)[0]]
             
-        }
-        console.log(props)
+		}
+		console.log(this.props)
     }
 
 	renderLogos() {
@@ -39,18 +39,27 @@ class Dashboard extends Component {
 	}
 
     logoClicked(i) {
-        this.setState({currProvider: i})
+        this.setState({currProvider: i, filters:[]})
     }
 
     renderFormBox() {
 		const search = this.state.search
 		const forms = []
-        this.props.providers[this.state.currProvider].forums.forms.map((val, i) => {
-			if (search === "" || val.title.toLowerCase().includes(search)) {
+        this.props.providers[this.state.currProvider].forums.map((val, i) => {
+			var disabled = false
+			val.filters.map(filter => {
+				if (this.state.filters.includes(filter)) {
+					disabled = true
+				}
+			})
+			if (disabled) {
+				console.log(val.title)
+			}
+			if ((search === "" || val.title.toLowerCase().includes(search) ) && !disabled) {
 				forms.push(
 					<FormBox key={i} form={val}/>
 				)
-			}
+			} 
         })
 		return forms
 	}
@@ -58,6 +67,39 @@ class Dashboard extends Component {
 	renderFormTitle() {
 		return (this.props.providers[this.state.currProvider].description)
 	}
+
+
+	renderFilters() {
+		const filters = []
+		this.props.providers[this.state.currProvider].filter.map(filter => {
+			filters.push(
+				<Row className="ml-0 mr-4">
+					<Nav.Item
+						style={{
+							color: this.state.filters.includes(filter) ? "#7c7c7c" : "#4C3EE5",
+							fontWeight: "bold"
+						}} 
+						onClick={() => {
+							if (this.state.filters.includes(filter)) {
+								const newarray = []
+								this.state.filters.map(sfilter => {
+									if (sfilter != filter) {
+										newarray.push(sfilter)
+									}
+								})
+								this.setState({filters: newarray})
+							} else {
+								this.setState({filters: [...this.state.filters, filter]})
+							}
+						}}
+						eventKey="all">{filter}
+					</Nav.Item>
+				</Row>
+			)
+		})
+		return filters
+	}
+
 
 	render() {
         return (
@@ -84,15 +126,7 @@ class Dashboard extends Component {
 						<Col xs={8}>
 							<p style={{"marginBottom": ".5rem"}}>Filter</p>
 							<Nav defaultActiveKey="all" className="pr-0">
-								<Nav.Item>
-									<Nav.Link eventKey="all">All</Nav.Link>
-								</Nav.Item>
-								<Nav.Item>
-									<Nav.Link className="text-muted" eventKey="waivers">Waivers</Nav.Link>
-								</Nav.Item>
-								<Nav.Item>
-									<Nav.Link className="text-muted" eventKey="hiringcoaches">Hiring Coaches</Nav.Link>
-								</Nav.Item>
+								{this.renderFilters()}
 							</Nav>
 						</Col>
 					</Row>
@@ -111,12 +145,10 @@ class Dashboard extends Component {
 
 export async function getServerSideProps(ctx) {
 	const cookies = parseCookies(ctx)
-	console.log(typeof(cookies.glc_token))
     // user has no cookie/login session, send them back to the main page to verify
     if (cookies.glc_token && cookies.glc_token !== "null") {
         const res = await fetch(`${process.env.protocol + ctx.req.headers.host}/api/dash/providers`, {method: "POST", body: JSON.stringify({token: cookies.glc_token}) })
         const json = await res.json()
-        console.log(json)
         return {
             props: {
 				providers: json
