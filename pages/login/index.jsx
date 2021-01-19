@@ -51,7 +51,7 @@ class Login extends Component {
 		if (!this.state.buissnessActive) {
 				this.setState({buissnessForm: () => {
 				return (
-						<Form.Control className="my-2" onChange={(val) => this.setState({buissness:val.target.value})} size="lg" type="email" placeholder="Buissness Name"/>
+						<Form.Control className="my-2" onChange={(val) => this.setState({buissness:val.target.value})} type="email" placeholder="Buissness Name"/>
 					)
 				}, 
 				buissnessActive: true, 
@@ -62,8 +62,8 @@ class Login extends Component {
 
 	render() {	  
 		return (
-			<div style={{height:"25%"}}>
-					<Nav className="justify-content-end mr-5">
+			<Container style={{height:"25%"}}>
+					<Nav className="justify-content-end row">
 						<Nav.Item>
 							<Nav.Link active={false}>
 								Create Account
@@ -89,7 +89,7 @@ class Login extends Component {
 							</Button>
 						</Form>
 					</Row>
-			</div>
+			</Container>
 
 		)
 	}

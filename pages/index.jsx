@@ -1,7 +1,7 @@
 import {Component} from "react"
 import {parseCookies, setCookie} from 'nookies'
 import {Container, Col, Row, Form, Nav} from "react-bootstrap"
-import {Navigation} from "../components/navigation"
+import Navigation from "../components/navigation"
 import FormBox from "../components/formbox";
 
 class Dashboard extends Component {
@@ -72,29 +72,26 @@ class Dashboard extends Component {
 		const filters = []
 		this.props.providers[this.state.currProvider].filter.map((filter, i) => {
 			filters.push(
-				<Row key={i} className="ml-0 mr-4">
-					<Nav.Item
-						key={i}
-						style={{
-							color: this.state.filters.includes(filter) ? "#4C3EE5" : "#7c7c7c",
-							fontWeight: "bold"
-						}} 
-						onClick={() => {
-							if (this.state.filters.includes(filter)) {
-								const newarray = []
-								this.state.filters.map(sfilter => {
-									if (sfilter != filter) {
-										newarray.push(sfilter)
-									}
-								})
-								this.setState({filters: newarray})
-							} else {
-								this.setState({filters: [...this.state.filters, filter]})
-							}
-						}}
-						>{filter}
-					</Nav.Item>
-				</Row>
+				<Nav.Item
+					key={i}
+					style={{
+						color: this.state.filters.includes(filter) ? "#4C3EE5" : "#7c7c7c",
+					}} 
+					onClick={() => {
+						if (this.state.filters.includes(filter)) {
+							const newarray = []
+							this.state.filters.map(sfilter => {
+								if (sfilter != filter) {
+									newarray.push(sfilter)
+								}
+							})
+							this.setState({filters: newarray})
+						} else {
+							this.setState({filters: [...this.state.filters, filter]})
+						}
+					}}
+					>{filter}
+				</Nav.Item>
 			)
 		})
 		return filters
@@ -113,19 +110,18 @@ class Dashboard extends Component {
 				</Container>
 				
 				<Container fluid={true} className="dashboard container pt-3">
-					<h4>{this.renderFormTitle()}</h4>
+					<h4>{this.renderFormTitle()} Forms</h4>
 					<Row >
-						<Col>
-							<Form>
+						<Col xs={12} sm={4}>
+							<Form className="all-forms-search">
 								<Form.Group>
-									<Form.Label>Search</Form.Label>
-									<Form.Control onChange={(e) => {this.setState({search:e.target.value.toLocaleLowerCase()})}} placeholder="Form name" />
+									<Form.Control onChange={(e) => {this.setState({search:e.target.value.toLocaleLowerCase()})}} placeholder="Search Form Name" />
 								</Form.Group>
 							</Form>
 						</Col>
-						<Col xs={8}>
-							<p style={{"marginBottom": ".5rem"}}>Filter</p>
-							<Nav defaultActiveKey="all" className="pr-0">
+						<Col xs={12} sm={8}>
+							<Nav defaultActiveKey="all" className="pr-0 all-forms-filter">
+								<Nav.Item>Filter</Nav.Item>
 								{this.renderFilters()}
 							</Nav>
 						</Col>
